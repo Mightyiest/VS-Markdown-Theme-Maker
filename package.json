@@ -14,6 +14,7 @@
   "build": {
     "appId": "com.vsmdthememaker.app",
     "productName": "VS MD Theme Maker",
+    "publish": null,
     "compression": "maximum",
     "directories": {
       "output": "dist"
@@ -33,7 +34,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "differentialPackage": false
     }
   },
   "devDependencies": {
