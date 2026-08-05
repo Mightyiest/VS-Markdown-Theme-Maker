@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* Injected dynamically by renderer */
+  </style>
+</head>
+<body>
+  <h1>🎓 Neural Architecture Search via Reinforcement Learning</h1>
+  <p><strong>Authors:</strong> Dr. Alex Mercer, Prof. Elena Rostova — <em>Institute of Advanced AI Computing</em></p>
+  
+  <blockquote>
+    <strong>Abstract:</strong> We propose an efficient gradient-based neural architecture search algorithm (NAS-RL) that reduces hyperparameter optimization time by 14x while maintaining high classification accuracy on benchmark datasets.
+  </blockquote>
+
+  <h2>1. Introduction</h2>
+  <p>Deep learning models require careful architecture design. Manual architecture engineering is labor-intensive and prone to human bias. In this paper, we formalize model selection as a Markov Decision Process (MDP).</p>
+
+  <h2>2. Mathematical Model & Formulation</h2>
+  <p>Let <i>A</i> denote the space of candidate layer configurations. The expected reward function <i>R</i>(&theta;) is defined over operational time steps <i>t</i> = 1 &hellip; <i>T</i> as:</p>
+  
+  <pre><code>J(&theta;) = E_[P(a_{1:T}; &theta;)] [ &Sigma;_{t=1..T} &gamma;<sup>t</sup> &middot; R(a<sub>t</sub>) ]</code></pre>
+
+  <h3>2.1 Convergence Benchmarks</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Model Variant</th>
+        <th>Top-1 Accuracy</th>
+        <th>Search Time (GPU Hours)</th>
+        <th>Parameters (M)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Baseline CNN</td>
+        <td>76.4%</td>
+        <td>240</td>
+        <td>25.6</td>
+      </tr>
+      <tr>
+        <td>NAS-RL (Proposed)</td>
+        <td>84.1%</td>
+        <td>17</td>
+        <td>14.2</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Experimental Results & Analysis</h2>
+  <p>Our empirical evaluations demonstrate superior computational efficiency across all validation sets. For detailed logs and weights, visit the <a href="#">Research Repository</a>.</p>
+  
+  <h4>References</h4>
+  <ul>
+    <li>[1] Smith et al. <em>Automated Architecture Exploration</em>, 2024.</li>
+    <li>[2] Zhang & Liu. <em>Reinforcement Learning in Deep Networks</em>, 2025.</li>
+  </ul>
+</body>
+</html>

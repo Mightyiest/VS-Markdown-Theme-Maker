@@ -1,0 +1,40 @@
+{
+  "name": "vs-md-theme-maker",
+  "version": "1.0.0",
+  "description": "VS MD Theme Maker — Markdown preview theme gallery & installer for VS Code / Antigravity IDE",
+  "author": "VS MD Theme Maker",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/settings-writer.test.js test/theme-customizer.test.js test/project-registry.test.js",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.vsmdthememaker.app",
+    "productName": "VS MD Theme Maker",
+    "compression": "maximum",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!test/**",
+      "!dist/**",
+      "!node_modules/.cache/**"
+    ],
+    "electronLanguages": ["en-US"],
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  }
+}

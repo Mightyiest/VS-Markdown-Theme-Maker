@@ -1,0 +1,154 @@
+/* Frost Light — Crisp Modern Sans-Serif Theme */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.7;
+  padding: 2.5rem 2rem;
+  max-width: 860px;
+  margin: 0 auto;
+  font-size: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  color: #0f172a;
+}
+
+h1 {
+  font-size: 1.85rem;
+  color: #2563eb;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.45rem;
+  color: #1d4ed8;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.35rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #3b82f6;
+}
+
+h4 {
+  font-size: 1.05rem;
+  color: #475569;
+}
+
+p {
+  margin-bottom: 1.2rem;
+}
+
+ul, ol {
+  margin-bottom: 1.2rem;
+  padding-left: 1.6rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
+}
+
+strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+em {
+  color: #334155;
+}
+
+code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.875em;
+  background-color: #f1f5f9;
+  color: #0284c7;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+pre {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+pre code {
+  background: transparent;
+  color: #0f172a;
+  padding: 0;
+  border: none;
+  font-size: 0.9rem;
+}
+
+blockquote {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1.1rem;
+  color: #475569;
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 0 6px 6px 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+th, td {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+hr {
+  height: 1px;
+  background-color: #cbd5e1;
+  border: none;
+  margin: 2rem 0;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 6px;
+}

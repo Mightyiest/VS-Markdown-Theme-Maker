@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* Injected dynamically by renderer */
+  </style>
+</head>
+<body>
+  <h1>🚀 Release Notes — v2.4.0 (2026-08-06)</h1>
+  <p>Major release featuring popular developer theme presets, interactive sample document switchers, and binary bundle size optimizations.</p>
+
+  <blockquote>
+    <strong>Breaking Changes:</strong> Theme configuration syntax in <code>.vscode/settings.json</code> now automatically normalizes custom theme identifiers.
+  </blockquote>
+
+  <h2>✨ New Features</h2>
+  <ul>
+    <li><strong>Popular Presets Pack:</strong> Added Catppuccin, Tokyo Night, Nord, and Dracula community themes.</li>
+    <li><strong>Sample Document Switcher:</strong> Easily test themes against API specs, academic papers, release notes, and READMEs.</li>
+    <li><strong>Single-Instance Lock:</strong> Prevent duplicate background processes when launching from IDE terminals.</li>
+  </ul>
+
+  <h2>⚡ Performance Enhancements</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>v2.3.0</th>
+        <th>v2.4.0</th>
+        <th>Improvement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Executable Size</td>
+        <td>94.8 MB</td>
+        <td>78.2 MB</td>
+        <td>-17.5%</td>
+      </tr>
+      <tr>
+        <td>Launch Time</td>
+        <td>1.2s</td>
+        <td>0.4s</td>
+        <td>3x Faster</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>🐛 Bug Fixes</h2>
+  <ul>
+    <li>Fixed theme sorting order evaluation error on custom creation dates.</li>
+    <li>Fixed color swatch alignment on custom theme cards in left sidebar.</li>
+    <li>Resolved orphaned backup file discovery on project record deletion.</li>
+  </ul>
+
+  <h3>Installation Commands</h3>
+  <pre><code># Upgrade to latest release
+npm install -g vs-md-theme-maker@latest
+
+# Verify version
+vs-md-theme-maker --version</code></pre>
+
+  <p>For full details, see the <a href="#">Changelog Commit Log</a>.</p>
+</body>
+</html>

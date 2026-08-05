@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* Injected dynamically by renderer */
+  </style>
+</head>
+<body>
+  <h1>⚡ Payment Gateway v2 REST API</h1>
+  <p>Official API documentation for processing secure payments, customer subscriptions, and automated webhook events.</p>
+  
+  <blockquote>
+    <strong>Base URL:</strong> <code>https://api.payments.example.com/v2</code><br>
+    All requests require Bearer Authentication header: <code>Authorization: Bearer sec_key_live_99823</code>
+  </blockquote>
+
+  <h2>1. Create Payment Charge</h2>
+  <p>Initializes a new payment transaction for a customer order.</p>
+
+  <h3>Endpoint Specifications</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Path</th>
+        <th>Auth Required</th>
+        <th>Rate Limit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>POST</code></td>
+        <td><code>/charges</code></td>
+        <td>Yes (Secret Key)</td>
+        <td>120 req / min</td>
+      </tr>
+      <tr>
+        <td><code>GET</code></td>
+        <td><code>/charges/:id</code></td>
+        <td>Yes (Publishable Key)</td>
+        <td>300 req / min</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Request Payload Example</h3>
+  <pre><code>{
+  "amount": 4999,
+  "currency": "usd",
+  "customer": "cus_99182371",
+  "metadata": {
+    "order_id": "ORD-2026-8819",
+    "environment": "production"
+  }
+}</code></pre>
+
+  <h3>Success Response <code>201 Created</code></h3>
+  <pre><code>{
+  "id": "ch_3M091823192",
+  "status": "succeeded",
+  "amount": 4999,
+  "paid": true,
+  "created_at": 1770359520
+}</code></pre>
+
+  <h4>Error Codes & Status Badges</h4>
+  <p>For troubleshooting failed charges, refer to the <a href="#">Error Handling Guide</a>.</p>
+  <ul>
+    <li><code>invalid_card</code> — Card details failed validation</li>
+    <li><code>insufficient_funds</code> — Card declined due to credit limits</li>
+    <li><code>rate_limit_exceeded</code> — API threshold exceeded</li>
+  </ul>
+</body>
+</html>

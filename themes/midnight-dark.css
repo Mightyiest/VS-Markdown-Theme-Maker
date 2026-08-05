@@ -1,0 +1,157 @@
+/* Midnight Dark — Antigravity 2.0 Muted Purple-Navy Theme */
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  background-color: #1a1a2e;
+  color: #d4d4e4;
+  line-height: 1.75;
+  padding: 2.5rem 2rem;
+  max-width: 860px;
+  margin: 0 auto;
+  font-size: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: 1.85rem;
+  color: #e2e2f0;
+  border-bottom: 1px solid #2a2a45;
+  padding-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #b8b8d0;
+  border-bottom: 1px solid #2a2a45;
+  padding-bottom: 0.35rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #9898b8;
+}
+
+h4 {
+  font-size: 1.05rem;
+  color: #8888a8;
+}
+
+p {
+  margin-bottom: 1.2rem;
+}
+
+ul, ol {
+  margin-bottom: 1.2rem;
+  padding-left: 1.6rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+a {
+  color: #7aa2f7;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #89b4fa;
+}
+
+strong {
+  color: #e0e0f0;
+  font-weight: 600;
+}
+
+em {
+  color: #c0c0d8;
+  font-style: italic;
+}
+
+code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.875em;
+  background-color: #252542;
+  color: #c0a0e0;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: #16162a;
+  border: 1px solid #2a2a45;
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+pre code {
+  background: transparent;
+  color: #d4d4e4;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+blockquote {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1.1rem;
+  color: #a0a0c0;
+  background: #1e1e38;
+  border-left: 3px solid #4a4a70;
+  border-radius: 0 6px 6px 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #2a2a45;
+}
+
+th, td {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid #2a2a45;
+}
+
+th {
+  background-color: #1e1e38;
+  color: #b8b8d0;
+  font-weight: 600;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+hr {
+  height: 1px;
+  background-color: #2a2a45;
+  border: none;
+  margin: 2rem 0;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 6px;
+}

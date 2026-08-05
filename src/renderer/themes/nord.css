@@ -1,0 +1,115 @@
+:root {
+  --vscode-markdown-backgroundColor: #2e3440;
+  --vscode-markdown-textColor: #d8dee9;
+  --vscode-markdown-h1Color: #88c0d0;
+  --vscode-markdown-h2Color: #81a1c1;
+  --vscode-markdown-h3Color: #5e81ac;
+  --vscode-markdown-h4Color: #8fbcbb;
+  --vscode-markdown-linkColor: #88c0d0;
+  --vscode-markdown-codeBackgroundColor: #3b4252;
+  --vscode-markdown-codeTextColor: #ebcb8b;
+  --vscode-markdown-blockquoteBackgroundColor: #3b4252;
+  --vscode-markdown-accentBorderColor: #88c0d0;
+  --vscode-markdown-tableHeaderBackgroundColor: #434c5e;
+}
+
+body {
+  background-color: var(--vscode-markdown-backgroundColor, #2e3440) !important;
+  color: var(--vscode-markdown-textColor, #d8dee9) !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  padding: 1.5rem 2rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  color: var(--vscode-markdown-h1Color, #88c0d0) !important;
+  font-size: 2em;
+  border-bottom: 1px solid var(--vscode-markdown-accentBorderColor, #88c0d0);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  color: var(--vscode-markdown-h2Color, #81a1c1) !important;
+  font-size: 1.5em;
+  border-bottom: 1px solid rgba(129, 161, 193, 0.2);
+  padding-bottom: 0.3em;
+}
+
+h3 {
+  color: var(--vscode-markdown-h3Color, #5e81ac) !important;
+  font-size: 1.25em;
+}
+
+h4 {
+  color: var(--vscode-markdown-h4Color, #8fbcbb) !important;
+  font-size: 1em;
+}
+
+a {
+  color: var(--vscode-markdown-linkColor, #88c0d0) !important;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--vscode-markdown-codeBackgroundColor, #3b4252) !important;
+  color: var(--vscode-markdown-codeTextColor, #ebcb8b) !important;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.88em;
+}
+
+pre {
+  background-color: var(--vscode-markdown-codeBackgroundColor, #3b4252) !important;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+pre code {
+  background-color: transparent !important;
+  padding: 0;
+}
+
+blockquote {
+  background-color: var(--vscode-markdown-blockquoteBackgroundColor, #3b4252) !important;
+  border-left: 4px solid var(--vscode-markdown-accentBorderColor, #88c0d0) !important;
+  margin: 1em 0;
+  padding: 0.6em 1em;
+  color: var(--vscode-markdown-textColor, #d8dee9);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th, td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5em 0.8em;
+  text-align: left;
+}
+
+th {
+  background-color: var(--vscode-markdown-tableHeaderBackgroundColor, #434c5e) !important;
+  font-weight: 600;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--vscode-markdown-accentBorderColor, #88c0d0);
+  margin: 2em 0;
+}

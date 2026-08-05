@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VS MD Theme Maker</title>
+  <style>
+    /* Default Dark Mode (Matching Reference #101010, #CCCCCC, #007ACC) */
+    :root, [data-app-theme="dark"] {
+      --bg-titlebar: #181818;
+      --bg-main: #101010;
+      --bg-header: #181818;
+      --bg-card: #1e1e1e;
+      --bg-card-hover: #2a2a2a;
+      --bg-input: #141414;
+      --border-color: #2d2d2d;
+      --accent-color: #007acc;
+      --accent-hover: #0062a3;
+      --text-main: #cccccc;
+      --text-muted: #888888;
+      --brand-pill-bg: #252526;
+      --brand-pill-color: #007acc;
+      --brand-pill-border: #3c3c3c;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --error-color: #ef4444;
+    }
+
+    /* Light Mode (Matching Reference #EEEEEE, #101010, #007ACC) */
+    [data-app-theme="light"] {
+      --bg-titlebar: #e5e5e5;
+      --bg-main: #eeeeee;
+      --bg-header: #f5f5f5;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f0f0f0;
+      --bg-input: #ffffff;
+      --border-color: #cccccc;
+      --accent-color: #007acc;
+      --accent-hover: #0062a3;
+      --text-main: #101010;
+      --text-muted: #666666;
+      --brand-pill-bg: #e0e0e0;
+      --brand-pill-color: #007acc;
+      --brand-pill-border: #bbbbbb;
+      --success-color: #059669;
+      --warning-color: #d97706;
+      --error-color: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    /* Custom Theme-Aware Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+      transition: background 0.15s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    /* Title Bar Styling */
+    #title-bar {
+      height: 34px;
+      background-color: var(--bg-titlebar);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.5rem;
+      -webkit-app-region: drag;
+      user-select: none;
+      font-size: 0.8rem;
+      position: relative;
+      z-index: 1000;
+    }
+
+    #title-bar .title-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      -webkit-app-region: no-drag;
+    }
+
+    .brand-pill {
+      background: var(--brand-pill-bg);
+      color: var(--brand-pill-color);
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--brand-pill-border);
+    }
+
+    .menu-item-wrapper {
+      position: relative;
+    }
+
+    .menu-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .menu-btn:hover, .menu-btn.active {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      min-width: 220px;
+      padding: 0.35rem 0;
+      display: none;
+      z-index: 10000;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.78rem;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.12s ease;
+    }
+
+    .dropdown-item:hover {
+      background: var(--bg-card-hover);
+      color: var(--accent-color);
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 0.3rem 0;
+    }
+
+    .shortcut-hint {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .title-center {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .title-right {
+      display: flex;
+      align-items: center;
+      -webkit-app-region: no-drag;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.15rem 0.55rem;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-right: 0.5rem;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      -webkit-app-region: no-drag;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .btn-token-reset {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s ease, color 0.12s ease;
+      flex-shrink: 0;
+      margin-left: 0.3rem;
+    }
+
+    .btn-token-reset:hover {
+      background: var(--accent-color);
+      color: #ffffff;
+      border-color: var(--accent-color);
+    }
+
+    .win-control-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 38px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .win-control-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+    }
+
+    .win-control-btn.close-btn:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    /* Merged Top Header + Project Bar */
+    header {
+      background-color: var(--bg-header);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-color);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .brand-text h1 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .project-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+    }
+
+    .project-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .project-path {
+      font-size: 0.78rem;
+      color: var(--accent-color);
+      background: var(--bg-input);
+      padding: 0.25rem 0.6rem;
+      border-radius: 5px;
+      border: 1px solid var(--border-color);
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: monospace;
+    }
+
+    .status-badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .status-badge.none {
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .status-badge.installed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-badge.warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Button styles */
+    .btn {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, opacity 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--bg-card-hover);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* 3-Column Layout */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 240px 1fr 280px;
+      height: calc(100vh - 34px - 48px);
+      overflow: hidden;
+    }
+
+    /* Left Sidebar: Themes List */
+    .sidebar {
+      background: var(--bg-header);
+      border-right: 1px solid var(--border-color);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      overflow-y: auto;
+    }
+
+    /* Sidebar Tabs */
+    .sidebar-tabs {
+      display: flex;
+      background: var(--bg-main);
+      border-radius: 6px;
+      padding: 2px;
+      border: 1px solid var(--border-color);
+    }
+
+    .sidebar-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.73rem;
+      font-weight: 500;
+      padding: 0.35rem 0.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .sidebar-tab:hover {
+      color: var(--text-main);
+    }
+
+    .sidebar-tab.active {
+      background: var(--bg-card);
+      color: var(--accent-color);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Project Cards */
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 7px;
+      padding: 0.55rem 0.7rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      position: relative;
+    }
+
+    .project-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-color);
+    }
+
+    .project-card.active {
+      border-color: var(--accent-color);
+      background: var(--bg-card-hover);
+      box-shadow: 0 0 0 1px var(--accent-color);
+    }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-theme-badge {
+      font-size: 0.68rem;
+      color: var(--brand-pill-color);
+      font-weight: 500;
+    }
+
+    .project-path-text {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-family: monospace;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-remove-project {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      cursor: pointer;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+
+    .btn-remove-project:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .theme-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .theme-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 7px;
+      padding: 0.55rem 0.7rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .theme-card:hover {
+      background: var(--bg-card-hover);
+      border-color: #3b82f6;
+    }
+
+    .theme-card.active {
+      border-color: var(--accent-color);
+      background: var(--bg-card-hover);
+      box-shadow: 0 0 0 1px var(--accent-color);
+    }
+
+    .theme-info h3 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .theme-info p {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 3px;
+    }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .theme-card-right {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .delete-theme-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      margin-left: 0.2rem;
+    }
+
+    .delete-theme-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    /* Middle Column: Live Preview */
+    .preview-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: var(--bg-main);
+    }
+
+    .preview-toolbar {
+      background: var(--bg-header);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.4rem 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 34px;
+    }
+
+    .preview-title {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 34px);
+      border: none;
+      background: #fff;
+    }
+
+    /* Right Column: Customizer Panel */
+    .customizer-panel {
+      background: var(--bg-header);
+      border-left: 1px solid var(--border-color);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      overflow-y: auto;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-header h2 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .token-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      flex: 1;
+    }
+
+    .token-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+
+    .token-label {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .token-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: 1px solid var(--border-color);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+
+    .hex-input {
+      width: 68px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.2rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: monospace;
+      text-transform: lowercase;
+    }
+
+    .hex-input:focus {
+      outline: 1px solid var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    .customizer-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .save-form {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .save-input {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+    }
+
+    /* Toast Container */
+    #toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.65rem 1rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      animation: slideIn 0.2s ease-out;
+      max-width: 320px;
+    }
+
+    .toast.success { border-left: 3px solid var(--success-color); }
+    .toast.error { border-left: 3px solid var(--error-color); }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="title-bar">
+    <div class="title-left">
+      <span class="brand-pill">VS MD Theme Maker</span>
+      <div class="menu-item-wrapper">
+        <button class="menu-btn" id="file-menu-btn" onclick="toggleFileMenu(event)">File</button>
+        <div class="dropdown-menu" id="file-dropdown">
+          <div class="dropdown-item" onclick="handleCreateCustomThemeMenu()">
+            <span>✨ Create Custom Theme</span>
+            <span class="shortcut-hint">Ctrl+N</span>
+          </div>
+          <div class="dropdown-item" onclick="handleBrowseFolder()">
+            <span>📁 Open Workspace Folder...</span>
+            <span class="shortcut-hint">Ctrl+O</span>
+          </div>
+          <div class="dropdown-item" onclick="handleUninstallTheme()">
+            <span>🗑️ Uninstall Active Theme</span>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" onclick="handleExitApp()">
+            <span>✕ Exit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="title-center">VS MD Theme Maker</div>
+    <div class="title-right">
+      <button class="theme-toggle-btn" id="app-theme-toggle" onclick="toggleAppTheme()" title="Switch Light/Dark App Theme">
+        <span id="theme-toggle-icon">☀️</span> <span id="theme-toggle-label">Light</span>
+      </button>
+      <button class="win-control-btn" onclick="window.electronAPI && window.electronAPI.minimizeWindow()" title="Minimize">&#x2212;</button>
+      <button class="win-control-btn" onclick="window.electronAPI && window.electronAPI.maximizeWindow()" title="Maximize">&#x25a1;</button>
+      <button class="win-control-btn close-btn" onclick="window.electronAPI && window.electronAPI.closeWindow()" title="Close">&#x2715;</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">VS</div>
+      <div class="brand-text">
+        <h1>VS MD Theme Maker</h1>
+      </div>
+    </div>
+
+    <div class="project-actions">
+      <div class="project-info">
+        <div class="project-path" id="project-path-display" title="No project selected">No project selected</div>
+        <span class="status-badge none" id="status-badge">● No project</span>
+      </div>
+      <button class="btn btn-secondary" onclick="handleBrowseFolder()">📁 Browse</button>
+      <button class="btn btn-danger" id="uninstall-btn" onclick="handleUninstallTheme()" style="display: none;">🗑️ Uninstall</button>
+      <button class="btn" id="install-btn" onclick="handleInstallTheme()" disabled>⚡ Install to Project</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left Column: Themes & Projects Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-tabs">
+        <button class="sidebar-tab active" id="tab-btn-themes" onclick="switchSidebarTab('themes')">🎨 Themes</button>
+        <button class="sidebar-tab" id="tab-btn-projects" onclick="switchSidebarTab('projects')">📁 Projects (<span id="installed-project-count">0</span>)</button>
+      </div>
+
+      <!-- Themes Catalog Tab View -->
+      <div id="sidebar-themes-view" style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div>
+          <div class="section-title">Popular Presets (5)</div>
+          <div class="theme-grid" id="preset-themes-container"></div>
+        </div>
+
+        <div>
+          <div class="section-title">Light Themes (3)</div>
+          <div class="theme-grid" id="light-themes-container"></div>
+        </div>
+
+        <div>
+          <div class="section-title">Dark Themes (3)</div>
+          <div class="theme-grid" id="dark-themes-container"></div>
+        </div>
+
+        <div id="custom-section" style="display: none;">
+          <div class="section-title">Custom Themes</div>
+          <div class="theme-grid" id="custom-themes-container"></div>
+        </div>
+      </div>
+
+      <!-- Installed Projects Tab View -->
+      <div id="sidebar-projects-view" style="display: none; flex-direction: column; gap: 0.6rem;">
+        <div class="section-title">Installed Projects</div>
+        <div id="installed-projects-container" class="theme-grid"></div>
+      </div>
+    </div>
+
+    <!-- Middle Column: Live Preview -->
+    <div class="preview-container">
+      <div class="preview-toolbar">
+        <div class="preview-title" id="current-theme-name">Previewing: Midnight Dark</div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <select id="sample-template-select" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color);" onchange="handleSampleTemplateChange(this.value)" title="Select Preview Document Sample">
+            <option value="standard">📄 Standard Spec</option>
+            <option value="api">⚡ API Specs</option>
+            <option value="academic">🎓 Academic Report</option>
+            <option value="changelog">🚀 Release Notes</option>
+            <option value="readme">📦 Project README</option>
+          </select>
+          <button class="btn btn-secondary" onclick="copySettingsSnippet()" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">📋 Copy Settings</button>
+        </div>
+      </div>
+      <iframe id="preview-iframe"></iframe>
+    </div>
+
+    <!-- Right Column: Color Customizer Panel -->
+    <div class="customizer-panel">
+      <div class="panel-header">
+        <h2>🎨 Color Customizer</h2>
+        <button class="btn btn-secondary" onclick="resetTokens()" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;">Reset</button>
+      </div>
+
+      <div class="token-list" id="token-list-container"></div>
+
+      <div class="customizer-actions">
+        <div class="save-form">
+          <input type="text" class="save-input" id="custom-name-input" placeholder="Custom theme name...">
+          <button class="btn" onclick="handleSaveCustomTheme()">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast-container"></div>
+
+  <script>
+    const TOKEN_LABELS = {
+      bgBody: 'Background',
+      textBody: 'Body Text',
+      textH1: 'Heading 1',
+      textH2: 'Heading 2',
+      textH3: 'Heading 3',
+      textH4: 'Heading 4',
+      textLink: 'Link',
+      bgCode: 'Code BG',
+      textCode: 'Inline Code',
+      bgBlockquote: 'Blockquote BG',
+      borderAccent: 'Accent Border',
+      bgTableHeader: 'Table Header BG'
+    };
+
+    const BUILTIN_THEMES = [
+      { id: 'paper-light', name: 'Paper Light', group: 'light', tagline: 'Warm printed document', swatches: ['#faf9f5', '#8b0000', '#242424'] },
+      { id: 'frost-light', name: 'Frost Light', group: 'light', tagline: 'Crisp modern sans-serif', swatches: ['#f8fafc', '#2563eb', '#1e293b'] },
+      { id: 'sand-light', name: 'Sand Light', group: 'light', tagline: 'Warm cream & amber', swatches: ['#fdf6ec', '#d97706', '#433422'] },
+      { id: 'midnight-dark', name: 'Midnight Dark', group: 'dark', tagline: 'Antigravity 2.0 theme', swatches: ['#1a1a2e', '#7aa2f7', '#d4d4e4'] },
+      { id: 'obsidian-dark', name: 'Obsidian Dark', group: 'dark', tagline: 'Deep neutral true dark', swatches: ['#0d0d0d', '#60a5fa', '#e0e0e0'] },
+      { id: 'forest-dark', name: 'Forest Dark', group: 'dark', tagline: 'Dark emerald green', swatches: ['#0b140e', '#34d399', '#d1e2d5'] },
+      { id: 'catppuccin-macchiato', name: 'Catppuccin Macchiato', group: 'preset', tagline: 'Soothing pastel dark', swatches: ['#24273a', '#8aadf4', '#cad3f5'] },
+      { id: 'tokyo-night', name: 'Tokyo Night', group: 'preset', tagline: 'Deep blue & neon highlights', swatches: ['#1a1b26', '#7aa2f7', '#a9b1d6'] },
+      { id: 'nord', name: 'Nord', group: 'preset', tagline: 'Arctic ice blue & slate', swatches: ['#2e3440', '#88c0d0', '#d8dee9'] },
+      { id: 'dracula', name: 'Dracula', group: 'preset', tagline: 'Vibrant gothic purple & pink', swatches: ['#282a36', '#bd93f9', '#f8f8f2'] },
+      { id: 'catppuccin-latte', name: 'Catppuccin Latte', group: 'preset', tagline: 'Warm soft pastel light', swatches: ['#eff1f5', '#1e66f5', '#4c4f69'] }
+    ];
+
+    let customThemes = [];
+    let selectedProjectPath = null;
+    let installedThemeId = null;
+    let activePreviewThemeId = 'midnight-dark';
+    let baseThemeId = 'midnight-dark';
+    let currentTokens = {};
+    let sampleHTML = '';
+
+    function toggleFileMenu(event) {
+      if (event) event.stopPropagation();
+      const dropdown = document.getElementById('file-dropdown');
+      const btn = document.getElementById('file-menu-btn');
+      const isShowing = dropdown.classList.contains('show');
+      closeAllMenus();
+      if (!isShowing) {
+        dropdown.classList.add('show');
+        btn.classList.add('active');
+      }
+    }
+
+    function closeAllMenus() {
+      const dropdown = document.getElementById('file-dropdown');
+      const btn = document.getElementById('file-menu-btn');
+      if (dropdown) dropdown.classList.remove('show');
+      if (btn) btn.classList.remove('active');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.menu-item-wrapper')) {
+        closeAllMenus();
+      }
+    });
+
+    function handleCreateCustomThemeMenu() {
+      closeAllMenus();
+      const customNameInput = document.getElementById('custom-name-input');
+      if (customNameInput) {
+        customNameInput.focus();
+      }
+      showToast('Theme Customizer active. Adjust tokens & click Save!', 'success');
+    }
+
+    function handleExitApp() {
+      closeAllMenus();
+      if (window.electronAPI && window.electronAPI.closeWindow) {
+        window.electronAPI.closeWindow();
+      }
+    }
+
+    function toggleAppTheme() {
+      const currentAppTheme = (document.documentElement.getAttribute('data-app-theme') || document.body.getAttribute('data-app-theme')) === 'light' ? 'light' : 'dark';
+      const newAppTheme = currentAppTheme === 'dark' ? 'light' : 'dark';
+      setAppTheme(newAppTheme);
+    }
+
+    function setAppTheme(theme) {
+      document.documentElement.setAttribute('data-app-theme', theme);
+      document.body.setAttribute('data-app-theme', theme);
+      localStorage.setItem('vs_md_app_theme', theme);
+      const icon = document.getElementById('theme-toggle-icon');
+      const label = document.getElementById('theme-toggle-label');
+      if (theme === 'light') {
+        if (icon) icon.innerText = '🌙';
+        if (label) label.innerText = 'Dark';
+      } else {
+        if (icon) icon.innerText = '☀️';
+        if (label) label.innerText = 'Light';
+      }
+    }
+
+    let installedProjects = [];
+    let currentSidebarTab = 'themes';
+
+    function switchSidebarTab(tabName) {
+      currentSidebarTab = tabName;
+      const themesView = document.getElementById('sidebar-themes-view');
+      const projectsView = document.getElementById('sidebar-projects-view');
+      const tabThemes = document.getElementById('tab-btn-themes');
+      const tabProjects = document.getElementById('tab-btn-projects');
+
+      if (tabName === 'projects') {
+        themesView.style.display = 'none';
+        projectsView.style.display = 'flex';
+        tabThemes.classList.remove('active');
+        tabProjects.classList.add('active');
+        refreshInstalledProjectsList();
+      } else {
+        themesView.style.display = 'flex';
+        projectsView.style.display = 'none';
+        tabProjects.classList.remove('active');
+        tabThemes.classList.add('active');
+      }
+    }
+
+    async function refreshInstalledProjectsList() {
+      if (!window.electronAPI || !window.electronAPI.listInstalledProjects) return;
+      const res = await window.electronAPI.listInstalledProjects();
+      if (res.ok) {
+        installedProjects = res.projects || [];
+        renderInstalledProjectsList();
+      }
+    }
+
+    function renderInstalledProjectsList() {
+      const container = document.getElementById('installed-projects-container');
+      const countEl = document.getElementById('installed-project-count');
+      if (countEl) countEl.innerText = installedProjects.length;
+
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (installedProjects.length === 0) {
+        container.innerHTML = `<div style="font-size: 0.72rem; color: var(--text-muted); padding: 0.5rem;">No projects with installed themes yet.</div>`;
+        return;
+      }
+
+      installedProjects.forEach(proj => {
+        const card = document.createElement('div');
+        const isSelected = selectedProjectPath && (selectedProjectPath === proj.projectPath);
+        card.className = `project-card ${isSelected ? 'active' : ''}`;
+        card.onclick = () => selectInstalledProject(proj.projectPath);
+
+        const folderName = proj.projectPath.split(/[\\/]/).pop() || proj.projectPath;
+        const themeName = proj.themeName || proj.themeId;
+
+        card.innerHTML = `
+          <div class="project-card-header">
+            <span class="project-name" title="${proj.projectPath}">📁 ${folderName}</span>
+            <button class="btn-remove-project" onclick="handleRemoveProjectRecord(event, '${proj.projectPath.replace(/\\/g, '\\\\')}')" title="Remove project from history">✕</button>
+          </div>
+          <div class="project-theme-badge">● ${themeName}</div>
+          <div class="project-path-text" title="${proj.projectPath}">${proj.projectPath}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function selectInstalledProject(projectPath) {
+      selectedProjectPath = projectPath;
+      document.getElementById('project-path-display').innerText = selectedProjectPath;
+      document.getElementById('project-path-display').title = selectedProjectPath;
+
+      renderInstalledProjectsList();
+      await checkInstalledTheme();
+
+      const record = installedProjects.find(p => p.projectPath === projectPath);
+      if (record && record.themeId) {
+        selectTheme(record.themeId);
+      }
+    }
+
+    async function handleRemoveProjectRecord(evt, projectPath) {
+      evt.stopPropagation();
+      if (!confirm(`Remove project history for "${projectPath}"?`)) return;
+
+      if (window.electronAPI && window.electronAPI.removeProjectRecord) {
+        const res = await window.electronAPI.removeProjectRecord(projectPath);
+        if (res.ok) {
+          showToast('Project record removed', 'success');
+          await refreshInstalledProjectsList();
+        }
+      }
+    }
+
+    async function init() {
+      const savedTheme = localStorage.getItem('vs_md_app_theme') || 'dark';
+      setAppTheme(savedTheme);
+
+      await fetchSampleHTML();
+      await refreshCustomThemes();
+      renderAllThemeCards();
+      await refreshInstalledProjectsList();
+      await loadThemeTokens(activePreviewThemeId);
+
+      if (window.electronAPI) {
+        if (window.electronAPI.onMenuCreateCustomTheme) {
+          window.electronAPI.onMenuCreateCustomTheme(() => handleCreateCustomThemeMenu());
+        }
+        if (window.electronAPI.onMenuOpenFolder) {
+          window.electronAPI.onMenuOpenFolder(() => handleBrowseFolder());
+        }
+      }
+    }
+
+    let currentTemplateId = localStorage.getItem('vs_md_sample_template_id') || 'standard';
+
+    async function fetchSampleHTML(templateId = null) {
+      if (templateId) currentTemplateId = templateId;
+      localStorage.setItem('vs_md_sample_template_id', currentTemplateId);
+
+      const selectEl = document.getElementById('sample-template-select');
+      if (selectEl) selectEl.value = currentTemplateId;
+
+      const fileMap = {
+        standard: 'sample-preview.html',
+        api: 'samples/sample-api.html',
+        academic: 'samples/sample-academic.html',
+        changelog: 'samples/sample-changelog.html',
+        readme: 'samples/sample-readme.html'
+      };
+
+      const fileToFetch = fileMap[currentTemplateId] || 'sample-preview.html';
+
+      try {
+        const res = await fetch(fileToFetch);
+        sampleHTML = await res.text();
+      } catch (_) {
+        sampleHTML = '<h1>Sample Preview</h1>';
+      }
+    }
+
+    async function handleSampleTemplateChange(templateId) {
+      await fetchSampleHTML(templateId);
+      await updatePreviewFromTokens();
+      showToast('Switched preview document sample', 'success');
+    }
+
+    async function refreshCustomThemes() {
+      if (!window.electronAPI) return;
+      const res = await window.electronAPI.listCustomThemes();
+      if (res.ok) {
+        customThemes = res.themes || [];
+      }
+    }
+
+    function renderAllThemeCards() {
+      const lightContainer = document.getElementById('light-themes-container');
+      const darkContainer = document.getElementById('dark-themes-container');
+      const presetContainer = document.getElementById('preset-themes-container');
+      const customSection = document.getElementById('custom-section');
+      const customContainer = document.getElementById('custom-themes-container');
+
+      lightContainer.innerHTML = '';
+      darkContainer.innerHTML = '';
+      if (presetContainer) presetContainer.innerHTML = '';
+      customContainer.innerHTML = '';
+
+      BUILTIN_THEMES.forEach(t => {
+        const card = createCardElement(t);
+        if (t.group === 'light') lightContainer.appendChild(card);
+        else if (t.group === 'dark') darkContainer.appendChild(card);
+        else if (t.group === 'preset' && presetContainer) presetContainer.appendChild(card);
+      });
+
+      if (customThemes.length > 0) {
+        customSection.style.display = 'block';
+        customThemes.forEach(t => {
+          const card = createCardElement({
+            id: t.id,
+            name: t.name,
+            group: 'custom',
+            tagline: `Custom (${t.baseThemeId || 'theme'})`,
+            swatches: [t.tokens.bgBody || '#1a1a2e', t.tokens.textLink || '#7aa2f7', t.tokens.textBody || '#d4d4e4'],
+            isCustom: true
+          });
+          customContainer.appendChild(card);
+        });
+      } else {
+        customSection.style.display = 'none';
+      }
+    }
+
+    function createCardElement(t) {
+      const card = document.createElement('div');
+      card.className = `theme-card ${t.id === activePreviewThemeId ? 'active' : ''}`;
+      card.id = `theme-card-${t.id}`;
+      card.onclick = () => selectTheme(t.id);
+
+      card.innerHTML = `
+        <div class="theme-info">
+          <h3>${t.name}</h3>
+          <p>${t.tagline}</p>
+        </div>
+        <div class="theme-card-right">
+          <div class="color-swatches">
+            ${t.swatches.map(c => `<div class="swatch" style="background:${c}"></div>`).join('')}
+          </div>
+          ${t.isCustom ? `<button class="delete-theme-btn" onclick="handleDeleteCustomTheme(event, '${t.id}')" title="Delete custom theme">✕</button>` : ''}
+        </div>
+      `;
+
+      return card;
+    }
+
+    async function selectTheme(themeId) {
+      activePreviewThemeId = themeId;
+      document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById(`theme-card-${themeId}`);
+      if (activeCard) activeCard.classList.add('active');
+
+      const isCustom = themeId.startsWith('custom-');
+      const found = isCustom ? customThemes.find(t => t.id === themeId) : BUILTIN_THEMES.find(t => t.id === themeId);
+      const name = found ? found.name : themeId;
+
+      document.getElementById('current-theme-name').innerText = `Previewing: ${name}`;
+
+      if (isCustom && found) {
+        document.getElementById('custom-name-input').value = found.name;
+        baseThemeId = found.baseThemeId || 'midnight-dark';
+      } else {
+        document.getElementById('custom-name-input').value = '';
+        baseThemeId = themeId;
+      }
+
+      updateInstallButtonLabel();
+      await loadThemeTokens(themeId);
+    }
+
+    let baseThemeTokens = {};
+
+    async function loadThemeTokens(themeId) {
+      if (!window.electronAPI) return;
+      const res = await window.electronAPI.getThemeTokens(themeId);
+      if (res.ok) {
+        currentTokens = { ...res.tokens };
+        if (res.baseThemeId) baseThemeId = res.baseThemeId;
+
+        const baseRes = await window.electronAPI.getThemeTokens(baseThemeId);
+        if (baseRes.ok) {
+          baseThemeTokens = { ...baseRes.tokens };
+        } else {
+          baseThemeTokens = { ...res.tokens };
+        }
+
+        renderCustomizerInputs();
+        await updatePreviewFromTokens();
+      }
+    }
+
+    async function resetSingleToken(key) {
+      if (baseThemeTokens && baseThemeTokens[key]) {
+        const originalVal = normalizeHex(baseThemeTokens[key]);
+        currentTokens[key] = originalVal;
+
+        const picker = document.getElementById(`picker-${key}`);
+        const hexInput = document.getElementById(`hex-${key}`);
+        if (picker) picker.value = originalVal;
+        if (hexInput) hexInput.value = originalVal;
+
+        showToast(`Reset ${TOKEN_LABELS[key]} to base theme color`, 'success');
+        await updatePreviewFromTokens();
+      }
+    }
+
+    function renderCustomizerInputs() {
+      const container = document.getElementById('token-list-container');
+      container.innerHTML = '';
+
+      Object.keys(TOKEN_LABELS).forEach(key => {
+        const row = document.createElement('div');
+        row.className = 'token-row';
+
+        const colorVal = normalizeHex(currentTokens[key] || '#000000');
+
+        row.innerHTML = `
+          <span class="token-label" title="${TOKEN_LABELS[key]}">${TOKEN_LABELS[key]}</span>
+          <div class="token-input-wrap">
+            <input type="color" id="picker-${key}" value="${colorVal}" oninput="handlePickerInput('${key}', this.value)">
+            <input type="text" class="hex-input" id="hex-${key}" value="${colorVal}" onchange="handleHexInput('${key}', this.value)">
+            <button class="btn-token-reset" onclick="resetSingleToken('${key}')" title="Reset ${TOKEN_LABELS[key]} to base color">↺</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function normalizeHex(val) {
+      if (!val) return '#000000';
+      let clean = val.trim();
+      if (!clean.startsWith('#')) clean = '#' + clean;
+      if (clean.length === 4) {
+        clean = '#' + clean[1] + clean[1] + clean[2] + clean[2] + clean[3] + clean[3];
+      }
+      return /^#[0-9a-fA-F]{6}$/.test(clean) ? clean : '#000000';
+    }
+
+    async function handlePickerInput(key, hex) {
+      currentTokens[key] = hex;
+      const hexInput = document.getElementById(`hex-${key}`);
+      if (hexInput) hexInput.value = hex;
+      await updatePreviewFromTokens();
+    }
+
+    async function handleHexInput(key, rawHex) {
+      const normalized = normalizeHex(rawHex);
+      currentTokens[key] = normalized;
+
+      const picker = document.getElementById(`picker-${key}`);
+      const hexInput = document.getElementById(`hex-${key}`);
+      if (picker) picker.value = normalized;
+      if (hexInput) hexInput.value = normalized;
+
+      await updatePreviewFromTokens();
+    }
+
+    async function updatePreviewFromTokens() {
+      if (!window.electronAPI) return;
+      const res = await window.electronAPI.previewFromTokens(currentTokens);
+      if (res.ok) {
+        const iframe = document.getElementById('preview-iframe');
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>${res.css}</style>
+          </head>
+          <body>${sampleHTML}</body>
+          </html>
+        `);
+        doc.close();
+      }
+    }
+
+    async function resetTokens() {
+      await loadThemeTokens(baseThemeId);
+      showToast('Tokens reset to base theme values', 'success');
+    }
+
+    async function handleSaveCustomTheme() {
+      const nameInput = document.getElementById('custom-name-input');
+      const name = nameInput.value.trim() || `Custom ${new Date().toLocaleTimeString()}`;
+
+      const isExistingCustom = activePreviewThemeId.startsWith('custom-');
+      const themeId = isExistingCustom ? activePreviewThemeId : undefined;
+
+      const res = await window.electronAPI.saveCustomTheme({
+        id: themeId,
+        name,
+        baseThemeId,
+        group: 'custom',
+        tokens: currentTokens
+      });
+
+      if (res.ok) {
+        showToast(`Saved theme "${name}"`, 'success');
+        await refreshCustomThemes();
+        renderAllThemeCards();
+        selectTheme(res.themeId);
+      } else {
+        showToast(`Save failed: ${res.message}`, 'error');
+      }
+    }
+
+    async function handleDeleteCustomTheme(evt, themeId) {
+      evt.stopPropagation();
+      if (!confirm('Delete this custom theme?')) return;
+
+      const res = await window.electronAPI.deleteCustomTheme(themeId);
+      if (res.ok) {
+        showToast('Custom theme deleted', 'success');
+        await refreshCustomThemes();
+        renderAllThemeCards();
+        if (activePreviewThemeId === themeId) {
+          selectTheme('midnight-dark');
+        }
+      }
+    }
+
+    async function handleBrowseFolder() {
+      if (!window.electronAPI) return;
+      const res = await window.electronAPI.openFolder();
+      if (res.ok && !res.canceled && res.path) {
+        selectedProjectPath = res.path;
+        document.getElementById('project-path-display').innerText = selectedProjectPath;
+        document.getElementById('project-path-display').title = selectedProjectPath;
+        await checkInstalledTheme();
+      }
+    }
+
+    async function checkInstalledTheme() {
+      if (!selectedProjectPath || !window.electronAPI) return;
+
+      let projectRecord = null;
+      if (window.electronAPI.getProjectRecord) {
+        const recRes = await window.electronAPI.getProjectRecord(selectedProjectPath);
+        if (recRes && recRes.ok) projectRecord = recRes.record;
+      }
+
+      const res = await window.electronAPI.detectTheme(selectedProjectPath);
+      const badge = document.getElementById('status-badge');
+      const uninstallBtn = document.getElementById('uninstall-btn');
+
+      if (!res.ok) {
+        badge.className = 'status-badge warning';
+        badge.innerText = `⚠️ ${res.message}`;
+        installedThemeId = null;
+        uninstallBtn.style.display = 'none';
+        updateInstallButtonLabel();
+        return;
+      }
+
+      if (res.themeId) {
+        installedThemeId = res.themeId;
+        const builtin = BUILTIN_THEMES.find(t => t.id === installedThemeId);
+        const custom = customThemes.find(t => t.id === installedThemeId);
+        const name = builtin ? builtin.name : (custom ? custom.name : (projectRecord ? projectRecord.themeName : installedThemeId));
+
+        if (res.cssMissing) {
+          badge.className = 'status-badge warning';
+          badge.innerText = `⚠️ ${name} (CSS Missing)`;
+        } else {
+          badge.className = 'status-badge installed';
+          badge.innerText = `● Installed: ${name}`;
+        }
+        uninstallBtn.style.display = 'inline-flex';
+      } else if (projectRecord && projectRecord.themeName) {
+        badge.className = 'status-badge installed';
+        badge.innerText = `● Recorded: ${projectRecord.themeName}`;
+        uninstallBtn.style.display = 'none';
+      } else {
+        installedThemeId = null;
+        badge.className = 'status-badge none';
+        badge.innerText = '● No theme installed';
+        uninstallBtn.style.display = 'none';
+      }
+
+      updateInstallButtonLabel();
+    }
+
+    function updateInstallButtonLabel() {
+      const installBtn = document.getElementById('install-btn');
+      if (!selectedProjectPath) {
+        installBtn.disabled = true;
+        installBtn.innerText = '⚡ Install to Project';
+        return;
+      }
+
+      installBtn.disabled = false;
+      const builtin = BUILTIN_THEMES.find(t => t.id === activePreviewThemeId);
+      const custom = customThemes.find(t => t.id === activePreviewThemeId);
+      const name = builtin ? builtin.name : (custom ? custom.name : activePreviewThemeId);
+
+      if (installedThemeId === activePreviewThemeId) {
+        installBtn.innerText = `✅ ${name} (Re-install)`;
+      } else if (installedThemeId) {
+        installBtn.innerText = `⚡ Switch to ${name}`;
+      } else {
+        installBtn.innerText = `⚡ Install ${name}`;
+      }
+    }
+
+    async function handleInstallTheme() {
+      if (!selectedProjectPath || !window.electronAPI) return;
+      const installBtn = document.getElementById('install-btn');
+      installBtn.disabled = true;
+
+      const res = await window.electronAPI.installTheme(selectedProjectPath, activePreviewThemeId, currentTokens);
+
+      if (res.ok) {
+        const builtin = BUILTIN_THEMES.find(t => t.id === activePreviewThemeId);
+        const custom = customThemes.find(t => t.id === activePreviewThemeId);
+        const name = builtin ? builtin.name : (custom ? custom.name : activePreviewThemeId);
+        const folderName = selectedProjectPath.split(/[\\/]/).pop();
+        
+        let msg = `✅ ${name} installed to ${folderName}`;
+        if (res.preservedUserCount > 0) {
+          msg += ` (${res.preservedUserCount} custom style preserved)`;
+        }
+        showToast(msg, 'success');
+        await checkInstalledTheme();
+        await refreshInstalledProjectsList();
+      } else {
+        showToast(`Installation failed: ${res.message}`, 'error');
+        installBtn.disabled = false;
+      }
+    }
+
+    async function handleUninstallTheme() {
+      if (!selectedProjectPath || !window.electronAPI) return;
+      const res = await window.electronAPI.uninstallTheme(selectedProjectPath);
+      if (res.ok) {
+        const folderName = selectedProjectPath.split(/[\\/]/).pop();
+        showToast(`Uninstalled theme from ${folderName}`, 'success');
+        await checkInstalledTheme();
+        await refreshInstalledProjectsList();
+      } else {
+        showToast(`Uninstall failed: ${res.message}`, 'error');
+      }
+    }
+
+    function copySettingsSnippet() {
+      const fileName = `${activePreviewThemeId}.css`;
+      const snippet = JSON.stringify({ "markdown.styles": [`./.vscode/${fileName}`] }, null, 2);
+      navigator.clipboard.writeText(snippet);
+      showToast('Copied settings.json snippet!', 'success');
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerText = message;
+      container.appendChild(toast);
+
+      if (type !== 'error') {
+        setTimeout(() => toast.remove(), 3000);
+      }
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
