@@ -46,6 +46,18 @@ An open-source Electron desktop app and theme customizer for VS Code & Antigravi
 
 ---
 
+## 📖 How to Use
+
+1. **Browse Your Project**: Select your target VS Code / Antigravity project workspace folder.
+2. **Apply or Create Theme**:
+   - Choose a built-in theme from the gallery to apply directly.
+   - Or customize color tokens using the editor and click **Save As New** to create a custom theme.
+3. **Manage Installed Projects & Themes**:
+   - Access saved projects anytime from the left sidebar menu.
+   - Easily **Reinstall**, **Uninstall**, or switch themes for any saved project workspace.
+
+---
+
 ## 🧪 Testing
 
 Run unit test suite:
