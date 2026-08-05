@@ -7,7 +7,9 @@
   "scripts": {
     "start": "electron .",
     "test": "node --test test/settings-writer.test.js test/theme-customizer.test.js test/project-registry.test.js",
-    "dist": "electron-builder --win portable"
+    "build": "electron-builder --win portable nsis",
+    "build:portable": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis"
   },
   "build": {
     "appId": "com.vsmdthememaker.app",
@@ -23,11 +25,15 @@
       "!dist/**",
       "!node_modules/.cache/**"
     ],
-    "electronLanguages": ["en-US"],
     "win": {
       "target": [
-        "portable"
+        "portable",
+        "nsis"
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "devDependencies": {

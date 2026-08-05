@@ -58,6 +58,25 @@ An open-source Electron desktop app and theme customizer for VS Code & Antigravi
 
 ---
 
+## 📦 Building Executables (Portable & Installer)
+
+To generate standalone Windows executables (saved locally in `dist/` and excluded from git):
+
+- **Build Both (Portable & Installer)**:
+  ```bash
+  npm run build
+  ```
+- **Build Portable App Only**:
+  ```bash
+  npm run build:portable
+  ```
+- **Build Setup Installer Only**:
+  ```bash
+  npm run build:installer
+  ```
+
+---
+
 ## 🧪 Testing
 
 Run unit test suite:
