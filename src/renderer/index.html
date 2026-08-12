@@ -1277,10 +1277,27 @@
       });
     }
 
+    function getDisplayFolderName(fullPath) {
+      if (!fullPath) return 'No project selected';
+      const parts = fullPath.split(/[\\/]/).filter(Boolean);
+      return parts.length > 0 ? parts[parts.length - 1] : fullPath;
+    }
+
+    function updateProjectPathDisplay(path) {
+      const display = document.getElementById('project-path-display');
+      if (!display) return;
+      if (!path) {
+        display.innerText = 'No project selected';
+        display.title = 'No project selected';
+        return;
+      }
+      display.innerText = getDisplayFolderName(path);
+      display.title = path;
+    }
+
     async function selectInstalledProject(projectPath) {
       selectedProjectPath = projectPath;
-      document.getElementById('project-path-display').innerText = selectedProjectPath;
-      document.getElementById('project-path-display').title = selectedProjectPath;
+      updateProjectPathDisplay(selectedProjectPath);
 
       renderInstalledProjectsList();
       await checkInstalledTheme();
@@ -1728,8 +1745,7 @@
       const res = await window.electronAPI.openFolder();
       if (res.ok && !res.canceled && res.path) {
         selectedProjectPath = res.path;
-        document.getElementById('project-path-display').innerText = selectedProjectPath;
-        document.getElementById('project-path-display').title = selectedProjectPath;
+        updateProjectPathDisplay(selectedProjectPath);
         await checkInstalledTheme();
       }
     }
