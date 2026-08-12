@@ -452,6 +452,13 @@ div.mermaid svg {
   color: ${t.bgBody} !important;
 }
 
+/* Prevent SVG foreignObject clipping for edge labels and node text */
+.mermaid foreignObject,
+.mermaid div.label,
+.mermaid span.edgeLabel {
+  overflow: visible !important;
+}
+
 .mermaid .edgeLabel rect {
   fill: ${t.bgBody} !important;
   opacity: 0.95 !important;
@@ -461,9 +468,10 @@ div.mermaid svg {
 .mermaid .edgeLabel p {
   background-color: ${t.bgBody} !important;
   color: ${t.textBody} !important;
-  padding: 1px 4px !important;
+  padding: 0 3px !important;
   border-radius: 3px !important;
   display: inline-block !important;
+  white-space: nowrap !important;
 }
 
 /* Completely suppress raw pre blocks when Mermaid or SVG is present */
