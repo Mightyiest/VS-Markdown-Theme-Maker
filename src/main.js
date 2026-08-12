@@ -1,6 +1,11 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
+
+// Disable disk cache file locking on Windows to prevent singleton lock and access denial errors
+app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
+app.commandLine.appendSwitch('disable-http-cache');
+
 const { isKnownThemeId, isCustomThemeId } = require('./lib/theme-registry');
 const { installTheme, detectTheme, uninstallTheme } = require('./lib/theme-installer');
 const { extractTokensFromCss, generateCssFromTokens, DEFAULT_TOKENS } = require('./lib/theme-tokens');
