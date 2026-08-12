@@ -1591,7 +1591,7 @@
         row.innerHTML = `
           <span class="token-label" title="${TOKEN_LABELS[key]}">${TOKEN_LABELS[key]}</span>
           <div class="token-input-wrap">
-            <input type="color" id="picker-${key}" value="${colorVal}" oninput="handlePickerInput('${key}', this.value)">
+            <input type="color" id="picker-${key}" value="${colorVal}" oninput="handlePickerInput('${key}', this.value)" onchange="handlePickerChange('${key}', this.value)">
             <input type="text" class="hex-input" id="hex-${key}" value="${colorVal}" onchange="handleHexInput('${key}', this.value)">
             <button class="btn-token-reset" onclick="resetSingleToken('${key}')" title="Reset ${TOKEN_LABELS[key]} to base color">↺</button>
           </div>
@@ -1610,11 +1610,43 @@
       return /^#[0-9a-fA-F]{6}$/.test(clean) ? clean : '#000000';
     }
 
-    async function handlePickerInput(key, hex) {
+    let livePreviewDebounceTimer = null;
+
+    async function updateLivePreviewCss() {
+      const iframe = document.getElementById('preview-iframe');
+      if (!iframe) return;
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!doc) return;
+      const styleEl = doc.getElementById('preview-custom-theme-css');
+
+      if (styleEl && window.electronAPI && window.electronAPI.previewFromTokens) {
+        const res = await window.electronAPI.previewFromTokens(currentTokens);
+        if (res.ok && res.css) {
+          styleEl.textContent = res.css;
+          return;
+        }
+      }
+      await updatePreviewFromTokens();
+    }
+
+    function handlePickerInput(key, hex) {
       currentTokens[key] = hex;
       const hexInput = document.getElementById(`hex-${key}`);
       if (hexInput) hexInput.value = hex;
-      await updatePreviewFromTokens();
+
+      updateLivePreviewCss();
+
+      clearTimeout(livePreviewDebounceTimer);
+      livePreviewDebounceTimer = setTimeout(() => {
+        updatePreviewFromTokens();
+      }, 300);
+    }
+
+    function handlePickerChange(key, hex) {
+      currentTokens[key] = hex;
+      const hexInput = document.getElementById(`hex-${key}`);
+      if (hexInput) hexInput.value = hex;
+      updatePreviewFromTokens();
     }
 
     async function handleHexInput(key, rawHex) {
@@ -1678,7 +1710,7 @@
           <meta charset="utf-8">
           <link rel="stylesheet" href="katex.min.css">
           <style>${cachedKatexCss || ''}</style>
-          <style>${res.css}</style>
+          <style id="preview-custom-theme-css">${res.css}</style>
         </head>
         <body>
           ${contentHtml}
