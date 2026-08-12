@@ -23,6 +23,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // IDE Preview Dependencies methods
   getDependenciesStatus: () => ipcRenderer.invoke('dependencies:getStatus'),
 
+  // External links
+  openExternal: (url) => ipcRenderer.invoke('open:external', { url }),
+
   // Window control methods
   minimizeWindow: () => ipcRenderer.invoke('window:minimize'),
   maximizeWindow: () => ipcRenderer.invoke('window:maximize'),
@@ -30,5 +33,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // Menu action listeners
   onMenuCreateCustomTheme: (callback) => ipcRenderer.on('menu:create-custom-theme', () => callback()),
-  onMenuOpenFolder: (callback) => ipcRenderer.on('menu:open-folder', () => callback())
+  onMenuOpenFolder: (callback) => ipcRenderer.on('menu:open-folder', () => callback()),
+  onMenuOpenAbout: (callback) => ipcRenderer.on('menu:open-about', () => callback())
 });

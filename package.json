@@ -1,6 +1,6 @@
 {
   "name": "vs-md-theme-maker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "VS MD Theme Maker — Markdown preview theme gallery & installer for VS Code / Antigravity IDE",
   "author": "VS MD Theme Maker",
   "main": "src/main.js",

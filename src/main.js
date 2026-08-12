@@ -33,6 +33,13 @@ function setupApplicationMenu() {
         },
         { type: 'separator' },
         {
+          label: 'About VS MD Theme Maker',
+          click: () => {
+            if (mainWindow) mainWindow.webContents.send('menu:open-about');
+          }
+        },
+        { type: 'separator' },
+        {
           label: 'Exit',
           role: process.platform === 'darwin' ? 'close' : 'quit'
         }
@@ -279,6 +286,14 @@ function registerIpcHandlers() {
 
   ipcMain.handle('dependencies:getStatus', async () => {
     return getDependenciesStatus();
+  });
+
+  ipcMain.handle('open:external', async (_, { url }) => {
+    if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+      await shell.openExternal(url);
+      return { ok: true };
+    }
+    return { ok: false, message: 'Invalid URL' };
   });
 }
 
