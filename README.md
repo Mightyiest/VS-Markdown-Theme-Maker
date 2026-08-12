@@ -4,8 +4,10 @@ An open-source Electron desktop app and theme customizer for VS Code & Antigravi
 
 > 💡 **Inspiration & Story**: This is a **vibecoded** app built using **Antigravity IDE** and **Antigravity 2.0**, powered by **Claude** for strong technical implementation planning while **Antigravity** executed the end-to-end task. The inspiration behind this project comes from daily use of Antigravity IDE—where default Markdown preview themes often felt generic and hard to read. This tool makes creating, customizing, and applying vibrant, readable Markdown preview themes effortless.
 
-![Dark Theme Preview](./dark.png)
-![Light Theme Preview](./light.png)
+<p align="center">
+  <img src="./dark.png" alt="Dark Theme Preview" width="49%" />
+  <img src="./light.png" alt="Light Theme Preview" width="49%" />
+</p>
 
 ---
 
