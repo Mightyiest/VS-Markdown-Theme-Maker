@@ -32,7 +32,9 @@ tmp/
 .env.*.local
 *.log
 
-# OS files
-.DS_Store
-Thumbs.db
+# Local workspace & test artifacts
+.crossnote/
+*.bak-*
+.vscode/
+mermaid-rendering-fix-plan.md
 

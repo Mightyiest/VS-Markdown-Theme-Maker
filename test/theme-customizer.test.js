@@ -51,6 +51,9 @@ test('theme-tokens: extractTokensFromCss and generateCssFromTokens round-trip', 
   assert.ok(generatedCss.includes('background-color: #112233;'));
   assert.ok(generatedCss.includes('color: #aabbcc;'));
   assert.ok(generatedCss.includes('color: #ff0000;'));
+  assert.ok(generatedCss.includes('th[align="right"], td[align="right"]'));
+  assert.ok(generatedCss.includes('th[align="center"], td[align="center"]'));
+  assert.ok(generatedCss.includes('.mermaid'));
 });
 
 test('custom-themes: save, list, and delete custom themes', () => {

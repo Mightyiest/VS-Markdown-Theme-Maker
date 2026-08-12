@@ -1,10 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const { THEMES, BUILTIN_THEME_IDS, isCustomThemeId, isKnownThemeId } = require('./theme-registry');
-const { readStyles, computeNextStyles, writeStyles, extractThemeIdFromPath } = require('./settings-writer');
+const {
+  readStyles,
+  readSettings,
+  computeNextStyles,
+  writeSettingValues,
+  extractThemeIdFromPath,
+  RECOMMENDED_MARKDOWN_EXTENSIONS,
+  readRecommendations,
+  computeNextRecommendations,
+  writeRecommendations
+} = require('./settings-writer');
 const { getCustomThemeCss } = require('./custom-themes');
 const { generateCssFromTokens } = require('./theme-tokens');
-const { recordProjectInstallation } = require('./project-registry');
+const { recordProjectInstallation, removeProjectRecord } = require('./project-registry');
 
 /**
  * Validate path safety.
@@ -126,9 +136,24 @@ function installTheme({ projectPath, themeId, appThemesDir, userDataPath = null,
   }
 
   const { nextStyles, preservedUserCount } = computeNextStyles(readRes.styles, themeId);
-  const writeRes = writeStyles(settingsPath, nextStyles);
+
+  const writeRes = writeSettingValues(settingsPath, [
+    { key: 'markdown.styles', value: nextStyles.length > 0 ? nextStyles : undefined },
+    { key: 'markdown.math.enabled', value: true }
+  ]);
 
   if (!writeRes.ok) return writeRes;
+
+  // Update extensions.json with native markdown extension recommendations
+  const extensionsPath = path.join(vscodeDir, 'extensions.json');
+  const readRecRes = readRecommendations(extensionsPath);
+  if (!readRecRes.malformed) {
+    const nextRecommendations = computeNextRecommendations(
+      readRecRes.recommendations,
+      RECOMMENDED_MARKDOWN_EXTENSIONS
+    );
+    writeRecommendations(extensionsPath, nextRecommendations);
+  }
 
   if (userDataPath) {
     const builtinTheme = THEMES.find(t => t.id === themeId);
@@ -196,7 +221,7 @@ function detectTheme({ projectPath }) {
 /**
  * Uninstall theme from project folder.
  */
-function uninstallTheme({ projectPath }) {
+function uninstallTheme({ projectPath, userDataPath = null }) {
   const pathCheck = validateProjectPath(projectPath);
   if (!pathCheck.ok) return pathCheck;
   const targetDir = pathCheck.resolvedPath;
@@ -217,11 +242,30 @@ function uninstallTheme({ projectPath }) {
     }
 
     const { nextStyles } = computeNextStyles(readRes.styles, null);
-    const writeRes = writeStyles(settingsPath, nextStyles);
+
+    const writeRes = writeSettingValues(settingsPath, [
+      { key: 'markdown.styles', value: nextStyles.length > 0 ? nextStyles : undefined }
+    ]);
     if (!writeRes.ok) return writeRes;
   }
 
+  // Clean up recommended markdown extensions from extensions.json
+  const extensionsPath = path.join(vscodeDir, 'extensions.json');
+  const readRecRes = readRecommendations(extensionsPath);
+  if (readRecRes.exists && !readRecRes.malformed) {
+    const nextRecommendations = computeNextRecommendations(
+      readRecRes.recommendations,
+      [],
+      RECOMMENDED_MARKDOWN_EXTENSIONS
+    );
+    writeRecommendations(extensionsPath, nextRecommendations);
+  }
+
   cleanStaleThemeCss(vscodeDir);
+
+  if (userDataPath) {
+    removeProjectRecord(userDataPath, targetDir);
+  }
 
   return { ok: true, removedThemeId };
 }
@@ -232,3 +276,5 @@ module.exports = {
   detectTheme,
   uninstallTheme
 };
+
+

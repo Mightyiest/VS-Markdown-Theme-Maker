@@ -7,16 +7,18 @@
   </style>
 </head>
 <body>
-  <h1>⚡ Payment Gateway v2 REST API</h1>
-  <p>Official API documentation for processing secure payments, customer subscriptions, and automated webhook events.</p>
+  <h1>⚡ Payment Gateway &amp; Cloud API v2</h1>
+  <p>Official API documentation for processing secure deployments, customer subscriptions, and automated webhook events.</p>
   
   <blockquote>
-    <strong>Base URL:</strong> <code>https://api.payments.example.com/v2</code><br>
-    All requests require Bearer Authentication header: <code>Authorization: Bearer sec_key_live_99823</code>
+    <p><strong>Base URL:</strong> <code>https://api.antigravity.io/v2</code><br>
+    All requests require Bearer Authentication header: <code>Authorization: Bearer sec_key_live_99823</code></p>
   </blockquote>
 
-  <h2>1. Create Payment Charge</h2>
-  <p>Initializes a new payment transaction for a customer order.</p>
+  <hr>
+
+  <h2>1. Create Deployment Charge</h2>
+  <p>Initializes a new cloud deployment transaction for a workspace cluster.</p>
 
   <h3>Endpoint Specifications</h3>
   <table>
@@ -31,45 +33,54 @@
     <tbody>
       <tr>
         <td><code>POST</code></td>
-        <td><code>/charges</code></td>
+        <td><code>/v2/deployments</code></td>
         <td>Yes (Secret Key)</td>
         <td>120 req / min</td>
       </tr>
       <tr>
         <td><code>GET</code></td>
-        <td><code>/charges/:id</code></td>
+        <td><code>/v2/deployments/:id</code></td>
         <td>Yes (Publishable Key)</td>
         <td>300 req / min</td>
       </tr>
     </tbody>
   </table>
 
-  <h3>Request Payload Example</h3>
-  <pre><code>{
-  "amount": 4999,
-  "currency": "usd",
-  "customer": "cus_99182371",
-  "metadata": {
-    "order_id": "ORD-2026-8819",
-    "environment": "production"
+  <h3>Request Payload Example (JSON)</h3>
+  <pre><code class="hljs language-json">{
+  "project_name": "aurora-dashboard",
+  "environment": "production",
+  "replica_count": 4,
+  "auto_scale": {
+    "min": 2,
+    "max": 8
   }
 }</code></pre>
 
-  <h3>Success Response <code>201 Created</code></h3>
-  <pre><code>{
-  "id": "ch_3M091823192",
-  "status": "succeeded",
-  "amount": 4999,
-  "paid": true,
-  "created_at": 1770359520
-}</code></pre>
+  <h2>2. Rate Limiting Model &amp; Token Bucket</h2>
+  <p>The token bucket algorithm regulates burst traffic:</p>
+  <pre><code>T(t) = min( Capacity, T(t_0) + &rho; &middot; (t - t_0) )</code></pre>
 
-  <h4>Error Codes & Status Badges</h4>
-  <p>For troubleshooting failed charges, refer to the <a href="#">Error Handling Guide</a>.</p>
+  <h2>3. Request Flow (Mermaid Sequence)</h2>
+  <div class="mermaid">sequenceDiagram
+    autonumber
+    actor Client as API Client
+    participant Gateway as API Gateway
+    participant Auth as Token Bucket Limiter
+    participant Engine as Deployment Microservice
+    Client->>Gateway: POST /v2/deployments (Bearer Key)
+    Gateway->>Auth: Validate Token &amp; Quota
+    Auth->>Engine: Forward Validated Payload
+    Engine-->>Gateway: 201 Created (Deployment URL)
+    Gateway-->>Client: { "status": "succeeded" }
+  </div>
+
+  <h2>4. Error Handling &amp; Status Codes</h2>
   <ul>
-    <li><code>invalid_card</code> — Card details failed validation</li>
-    <li><code>insufficient_funds</code> — Card declined due to credit limits</li>
-    <li><code>rate_limit_exceeded</code> — API threshold exceeded</li>
+    <li><code>201 Created</code> — Deployment provisioned and operational</li>
+    <li><code>400 Bad Request</code> — Payload schema validation failed</li>
+    <li><code>401 Unauthorized</code> — Bearer token expired or invalid</li>
+    <li><code>429 Rate Limited</code> — Token bucket empty; backoff required</li>
   </ul>
 </body>
 </html>

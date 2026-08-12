@@ -7,21 +7,26 @@
   </style>
 </head>
 <body>
-  <h1>🚀 Release Notes — v2.4.0 (2026-08-06)</h1>
-  <p>Major release featuring popular developer theme presets, interactive sample document switchers, and binary bundle size optimizations.</p>
+  <h1>🚀 Release Notes — v2.4.0 (2026-08-11)</h1>
+  <p>Major release featuring popular developer theme presets, LaTeX math rendering with KaTeX, Mermaid diagrams, interactive sample document switchers, and binary bundle size optimizations.</p>
 
   <blockquote>
-    <strong>Breaking Changes:</strong> Theme configuration syntax in <code>.vscode/settings.json</code> now automatically normalizes custom theme identifiers.
+    <p><strong>Breaking Changes:</strong> Theme configuration syntax in <code>.vscode/settings.json</code> now automatically normalizes custom theme identifiers.</p>
   </blockquote>
 
-  <h2>✨ New Features</h2>
+  <hr>
+
+  <h2>✨ New Features &amp; Capabilities</h2>
   <ul>
+    <li><strong>LaTeX Math Formulas:</strong> Synchronous math rendering for inline expressions and multiline display equations via KaTeX.</li>
+    <li><strong>Mermaid Diagram Engine:</strong> Native flowchart, sequence diagram, and git graph rendering directly in Markdown previews.</li>
     <li><strong>Popular Presets Pack:</strong> Added Catppuccin, Tokyo Night, Nord, and Dracula community themes.</li>
     <li><strong>Sample Document Switcher:</strong> Easily test themes against API specs, academic papers, release notes, and READMEs.</li>
-    <li><strong>Single-Instance Lock:</strong> Prevent duplicate background processes when launching from IDE terminals.</li>
   </ul>
 
   <h2>⚡ Performance Enhancements</h2>
+  <pre><code>Speedup = T_baseline / T_optimized = 1.2s / 0.4s = 3.0x (7.8x faster Markdown parser)</code></pre>
+
   <table>
     <thead>
       <tr>
@@ -39,28 +44,43 @@
         <td>-17.5%</td>
       </tr>
       <tr>
-        <td>Launch Time</td>
+        <td>Launch Latency</td>
         <td>1.2s</td>
         <td>0.4s</td>
-        <td>3x Faster</td>
+        <td>3.0x Faster</td>
+      </tr>
+      <tr>
+        <td>Markdown Parse Time</td>
+        <td>14.2ms</td>
+        <td>1.8ms</td>
+        <td>7.8x Faster</td>
       </tr>
     </tbody>
   </table>
 
-  <h2>🐛 Bug Fixes</h2>
-  <ul>
-    <li>Fixed theme sorting order evaluation error on custom creation dates.</li>
-    <li>Fixed color swatch alignment on custom theme cards in left sidebar.</li>
-    <li>Resolved orphaned backup file discovery on project record deletion.</li>
-  </ul>
+  <h2>🌿 Release Git Flow (Mermaid Diagram)</h2>
+  <div class="mermaid">gitGraph
+    commit id: "v2.3.0"
+    branch feature/katex-support
+    checkout feature/katex-support
+    commit id: "katex-engine"
+    commit id: "math-block-rendering"
+    checkout main
+    merge feature/katex-support id: "merge-katex"
+    branch feature/mermaid-diagrams
+    checkout feature/mermaid-diagrams
+    commit id: "mermaid-renderer"
+    commit id: "theme-diagram-styles"
+    checkout main
+    merge feature/mermaid-diagrams id: "v2.4.0-release"
+    commit id: "v2.4.0-final" tag: "v2.4.0"
+  </div>
 
-  <h3>Installation Commands</h3>
-  <pre><code># Upgrade to latest release
+  <h2>📦 Installation Commands</h2>
+  <pre><code class="hljs language-bash"># Upgrade to latest release
 npm install -g vs-md-theme-maker@latest
 
 # Verify version
 vs-md-theme-maker --version</code></pre>
-
-  <p>For full details, see the <a href="#">Changelog Commit Log</a>.</p>
 </body>
 </html>

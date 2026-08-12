@@ -779,6 +779,7 @@
     }
 
     .toast {
+      white-space: pre-line;
       pointer-events: auto;
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -792,11 +793,124 @@
     }
 
     .toast.success { border-left: 3px solid var(--success-color); }
+    .toast.warning { border-left: 3px solid var(--warning-color); }
     .toast.error { border-left: 3px solid var(--error-color); }
 
     @keyframes slideIn {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Dependencies Modal & Badges */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: modalFadeIn 0.18s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      padding: 0.85rem 1.1rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-header);
+    }
+
+    .close-modal-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      line-height: 1;
+    }
+
+    .close-modal-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+    }
+
+    .dep-card {
+      background: var(--bg-header);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      transition: border-color 0.15s ease;
+    }
+
+    .dep-card:hover {
+      border-color: var(--accent-color);
+    }
+
+    .dep-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.12rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .dep-badge.installed {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .dep-badge.missing {
+      background: rgba(234, 179, 8, 0.15);
+      color: #eab308;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+    }
+
+    .badge-status-pill {
+      border-radius: 4px;
+      padding: 0.1rem 0.35rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .badge-status-pill.all-installed {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+    }
+
+    .badge-status-pill.has-missing {
+      background: rgba(234, 179, 8, 0.15);
+      color: #eab308;
     }
   </style>
 </head>
@@ -900,14 +1014,27 @@
         <div class="preview-title" id="current-theme-name">Previewing: Midnight Dark</div>
         <div style="display: flex; align-items: center; gap: 0.5rem;">
           <select id="sample-template-select" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color);" onchange="handleSampleTemplateChange(this.value)" title="Select Preview Document Sample">
-            <option value="standard">📄 Standard Spec</option>
-            <option value="api">⚡ API Specs</option>
+            <option value="standard">📄 Markdown &amp; LaTeX Showcase</option>
+            <option value="latex">🔬 Advanced LaTeX Equations</option>
+            <option value="api">⚡ API Specs &amp; Codeblocks</option>
             <option value="academic">🎓 Academic Report</option>
             <option value="changelog">🚀 Release Notes</option>
             <option value="readme">📦 Project README</option>
+            <option value="custom_editor">✏️ Live Markdown Editor</option>
           </select>
+          <button class="btn btn-secondary" id="dep-modal-btn" onclick="openDependenciesModal()" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem;" title="Manage IDE Markdown Preview Extensions">
+            <span>🧩 Plugins</span>
+            <span id="dep-pill-badge" class="badge-status-pill has-missing">...</span>
+          </button>
           <button class="btn btn-secondary" onclick="copySettingsSnippet()" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">📋 Copy Settings</button>
         </div>
+      </div>
+      <div id="live-editor-panel" style="display: none; height: 180px; min-height: 120px; border-bottom: 1px solid var(--border-color); background: var(--bg-header); padding: 0.6rem 0.85rem; flex-direction: column; gap: 0.4rem; flex-shrink: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">✏️ LIVE MARKDOWN &amp; LATEX INPUT</span>
+          <span style="font-size: 0.68rem; color: var(--accent-color);">Live auto-render on input</span>
+        </div>
+        <textarea id="live-markdown-input" oninput="handleLiveEditorInput()" style="flex: 1; width: 100%; background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 5px; padding: 0.5rem 0.6rem; font-family: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace; font-size: 0.75rem; resize: none; outline: none; line-height: 1.45;" placeholder="Type or paste Markdown / LaTeX equations here..."></textarea>
       </div>
       <iframe id="preview-iframe"></iframe>
     </div>
@@ -929,6 +1056,31 @@
       </div>
     </div>
   </main>
+
+  <!-- IDE Preview Dependencies Modal -->
+  <div id="dependencies-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeDependenciesModal()">
+    <div class="modal-card" style="width: 580px; max-width: 90vw;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.2rem;">🧩</span>
+          <div>
+            <h3 style="margin: 0; font-size: 0.95rem;">IDE Markdown Preview Dependencies</h3>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Native plugins for built-in VS Code / Antigravity IDE preview (Ctrl+Shift+V)</div>
+          </div>
+        </div>
+        <button class="close-modal-btn" onclick="closeDependenciesModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="dependencies-list-container" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.65rem; max-height: 420px; overflow-y: auto;">
+        <!-- Dynamic Dependency Cards -->
+      </div>
+      <div class="modal-footer" style="padding: 0.65rem 0.9rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); background: var(--bg-header);">
+        <button class="btn btn-secondary" onclick="refreshDependenciesStatus(true)" style="font-size: 0.72rem; padding: 0.25rem 0.55rem;">🔄 Refresh Status</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" onclick="closeDependenciesModal()" style="font-size: 0.72rem; padding: 0.25rem 0.55rem;">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="toast-container"></div>
 
@@ -1135,6 +1287,7 @@
       renderAllThemeCards();
       await refreshInstalledProjectsList();
       await loadThemeTokens(activePreviewThemeId);
+      await refreshDependenciesStatus();
 
       if (window.electronAPI) {
         if (window.electronAPI.onMenuCreateCustomTheme) {
@@ -1147,6 +1300,11 @@
     }
 
     let currentTemplateId = localStorage.getItem('vs_md_sample_template_id') || 'standard';
+    let sampleRawText = '';
+    let isSampleMarkdown = true;
+    let cachedKatexCss = '';
+    let cachedMermaidJs = '';
+    let liveEditorDebounceTimer = null;
 
     async function fetchSampleHTML(templateId = null) {
       if (templateId) currentTemplateId = templateId;
@@ -1155,22 +1313,45 @@
       const selectEl = document.getElementById('sample-template-select');
       if (selectEl) selectEl.value = currentTemplateId;
 
+      const editorPanel = document.getElementById('live-editor-panel');
+      const liveInput = document.getElementById('live-markdown-input');
+
+      if (currentTemplateId === 'custom_editor') {
+        if (editorPanel) editorPanel.style.display = 'flex';
+        if (liveInput && !liveInput.value.trim()) {
+          liveInput.value = `# ✏️ Live Markdown & LaTeX Sandbox\n\n> [!NOTE]\n> Type or edit Markdown below to test your theme in real-time.\n\n### Mathematical Formulas\n$$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$\n\nInline equation: $E = mc^2$\n\n### Code Block with Language Header\n\`\`\`javascript\nconst hello = "Antigravity";\nconsole.log(hello);\n\`\`\``;
+        }
+        return;
+      } else {
+        if (editorPanel) editorPanel.style.display = 'none';
+      }
+
       const fileMap = {
-        standard: 'sample-preview.html',
-        api: 'samples/sample-api.html',
-        academic: 'samples/sample-academic.html',
-        changelog: 'samples/sample-changelog.html',
-        readme: 'samples/sample-readme.html'
+        standard: 'samples/standard.md',
+        latex: 'samples/latex.md',
+        api: 'samples/api.md',
+        academic: 'samples/academic.md',
+        changelog: 'samples/changelog.md',
+        readme: 'samples/readme.md'
       };
 
-      const fileToFetch = fileMap[currentTemplateId] || 'sample-preview.html';
+      const fileToFetch = fileMap[currentTemplateId] || 'samples/standard.md';
 
       try {
         const res = await fetch(fileToFetch);
-        sampleHTML = await res.text();
+        sampleRawText = await res.text();
+        isSampleMarkdown = fileToFetch.endsWith('.md');
       } catch (_) {
-        sampleHTML = '<h1>Sample Preview</h1>';
+        sampleRawText = '# Sample Preview';
+        isSampleMarkdown = true;
       }
+    }
+
+    function handleLiveEditorInput() {
+      if (liveEditorDebounceTimer) clearTimeout(liveEditorDebounceTimer);
+      liveEditorDebounceTimer = setTimeout(() => {
+        updatePreviewFromTokens();
+      }, 100);
     }
 
     async function handleSampleTemplateChange(templateId) {
@@ -1360,20 +1541,114 @@
     async function updatePreviewFromTokens() {
       if (!window.electronAPI) return;
       const res = await window.electronAPI.previewFromTokens(currentTokens);
-      if (res.ok) {
-        const iframe = document.getElementById('preview-iframe');
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        doc.open();
-        doc.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <style>${res.css}</style>
-          </head>
-          <body>${sampleHTML}</body>
-          </html>
-        `);
-        doc.close();
+      if (!res.ok) return;
+
+      if (!cachedKatexCss && window.electronAPI.getKatexCss) {
+        const katexRes = await window.electronAPI.getKatexCss();
+        if (katexRes && katexRes.ok) cachedKatexCss = katexRes.css;
+      }
+      if (!cachedMermaidJs && window.electronAPI.getMermaidJs) {
+        const mermaidRes = await window.electronAPI.getMermaidJs();
+        if (mermaidRes && mermaidRes.ok) cachedMermaidJs = mermaidRes.js;
+      }
+
+      let contentHtml = '';
+      if (currentTemplateId === 'custom_editor') {
+        const liveInput = document.getElementById('live-markdown-input');
+        const text = liveInput ? liveInput.value : '';
+        if (window.electronAPI.renderMarkdown) {
+          const renderRes = await window.electronAPI.renderMarkdown(text);
+          contentHtml = renderRes.ok ? renderRes.html : `<pre>${text}</pre>`;
+        } else {
+          contentHtml = `<pre>${text}</pre>`;
+        }
+      } else if (isSampleMarkdown) {
+        if (window.electronAPI.renderMarkdown) {
+          const renderRes = await window.electronAPI.renderMarkdown(sampleRawText);
+          contentHtml = renderRes.ok ? renderRes.html : sampleRawText;
+        } else {
+          contentHtml = sampleRawText;
+        }
+      } else {
+        contentHtml = sampleRawText;
+      }
+
+      const iframe = document.getElementById('preview-iframe');
+      if (!iframe) return;
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      const isAppLight = (document.documentElement.getAttribute('data-app-theme') || 'dark') === 'light';
+      const mermaidTheme = isAppLight ? 'default' : 'dark';
+
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <link rel="stylesheet" href="katex.min.css">
+          <style>${cachedKatexCss || ''}</style>
+          <style>${res.css}</style>
+        </head>
+        <body>
+          ${contentHtml}
+          <script>
+            function handleCopyCode(btn) {
+              try {
+                const base64 = btn.getAttribute('data-code');
+                const code = atob(base64);
+                navigator.clipboard.writeText(code).then(() => {
+                  btn.classList.add('copied');
+                  const textSpan = btn.querySelector('.copy-text');
+                  if (textSpan) textSpan.innerText = 'Copied!';
+                  setTimeout(() => {
+                    btn.classList.remove('copied');
+                    if (textSpan) textSpan.innerText = 'Copy';
+                  }, 2000);
+                });
+              } catch (e) {
+                console.error('Failed to copy code', e);
+              }
+            }
+
+            async function renderMermaidDiagrams() {
+              try {
+                if (window.mermaid) {
+                  window.mermaid.initialize({
+                    startOnLoad: false,
+                    theme: '${mermaidTheme}',
+                    securityLevel: 'loose',
+                    fontSize: 14,
+                    flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis', nodeSpacing: 45, rankSpacing: 45 },
+                    sequence: { useMaxWidth: true, actorFontSize: 14, messageFontSize: 13, noteFontSize: 12, showSequenceNumbers: true }
+                  });
+                  await window.mermaid.run({
+                    querySelector: '.mermaid'
+                  });
+                }
+              } catch (err) {
+                console.error('Mermaid render error:', err);
+              }
+            }
+
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', renderMermaidDiagrams);
+            } else {
+              renderMermaidDiagrams();
+            }
+          <\/script>
+        </body>
+        </html>
+      `);
+      doc.close();
+
+      if (cachedMermaidJs) {
+        try {
+          const mScript = doc.createElement('script');
+          mScript.textContent = cachedMermaidJs;
+          doc.body.appendChild(mScript);
+        } catch (mErr) {
+          console.error('Failed to inject Mermaid bundle:', mErr);
+        }
       }
     }
 
@@ -1522,7 +1797,9 @@
         if (res.preservedUserCount > 0) {
           msg += ` (${res.preservedUserCount} custom style preserved)`;
         }
+
         showToast(msg, 'success');
+
         await checkInstalledTheme();
         await refreshInstalledProjectsList();
       } else {
@@ -1546,7 +1823,15 @@
 
     function copySettingsSnippet() {
       const fileName = `${activePreviewThemeId}.css`;
-      const snippet = JSON.stringify({ "markdown.styles": [`./.vscode/${fileName}`] }, null, 2);
+      const snippet = JSON.stringify({
+        "markdown.styles": [`./.vscode/${fileName}`],
+        "markdown.preview.breaks": true,
+        "markdown.preview.linkify": true,
+        "markdown.preview.typographer": true,
+        "markdown.preview.scrollEditorWithPreview": true,
+        "markdown.preview.scrollPreviewWithEditor": true,
+        "workbench.editor.openSideBySideDirection": "right"
+      }, null, 2);
       navigator.clipboard.writeText(snippet);
       showToast('Copied settings.json snippet!', 'success');
     }
@@ -1558,9 +1843,84 @@
       toast.innerText = message;
       container.appendChild(toast);
 
-      if (type !== 'error') {
+      // Errors and warnings persist — auto-dismissing them would hide the
+      // very failure the user needs to read.
+      if (type === 'success') {
         setTimeout(() => toast.remove(), 3000);
       }
+    }
+
+    let dependenciesData = null;
+
+    async function refreshDependenciesStatus(showToastOnCheck = false) {
+      if (!window.electronAPI || !window.electronAPI.getDependenciesStatus) return;
+      const res = await window.electronAPI.getDependenciesStatus();
+      if (res && res.ok) {
+        dependenciesData = res;
+        updateDependenciesUI(res);
+        if (showToastOnCheck) {
+          showToast(`Dependencies refreshed: ${res.installedCount}/${res.totalCount} active`, 'success');
+        }
+      }
+    }
+
+    function updateDependenciesUI(data) {
+      const badge = document.getElementById('dep-pill-badge');
+      if (badge) {
+        badge.innerText = `${data.installedCount}/${data.totalCount}`;
+        if (data.allInstalled) {
+          badge.className = 'badge-status-pill all-installed';
+          badge.title = 'All recommended Markdown preview plugins are installed in IDE';
+        } else {
+          badge.className = 'badge-status-pill has-missing';
+          badge.title = `${data.totalCount - data.installedCount} preview plugins not yet installed in IDE`;
+        }
+      }
+
+      renderDependenciesModalList(data.items);
+    }
+
+    function renderDependenciesModalList(items) {
+      const container = document.getElementById('dependencies-list-container');
+      if (!container || !items) return;
+      container.innerHTML = '';
+
+      items.forEach(dep => {
+        const card = document.createElement('div');
+        card.className = 'dep-card';
+
+        const statusBadge = dep.installed
+          ? `<span class="dep-badge installed">✅ Installed</span>`
+          : `<span class="dep-badge missing">⚠️ Not Installed</span>`;
+
+        card.innerHTML = `
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 0.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-weight: 600; font-size: 0.85rem; color: var(--text-main);">${dep.name}</span>
+              <span style="font-size: 0.65rem; color: var(--text-muted); background: var(--bg-card); padding: 0.08rem 0.35rem; border-radius: 3px; border: 1px solid var(--border-color);">${dep.category}</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35;">${dep.description}</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-family: monospace;">${dep.id}</div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; min-width: 105px;">
+            ${statusBadge}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openDependenciesModal() {
+      const modal = document.getElementById('dependencies-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        refreshDependenciesStatus();
+      }
+    }
+
+    function closeDependenciesModal() {
+      const modal = document.getElementById('dependencies-modal');
+      if (modal) modal.style.display = 'none';
     }
 
     window.onload = init;

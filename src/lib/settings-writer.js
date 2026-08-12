@@ -43,11 +43,14 @@ function extractThemeIdFromPath(stylePath) {
 }
 
 /**
- * Read and parse markdown.styles from settings.json.
+ * Read and parse settings.json into a plain object.
+ *
+ * Shared by every key-specific reader so that BOM handling, jsonc tolerance and
+ * malformed-file reporting stay in exactly one place.
  */
-function readStyles(settingsPath) {
+function readSettings(settingsPath) {
   if (!fs.existsSync(settingsPath)) {
-    return { exists: false, styles: [] };
+    return { exists: false, data: null };
   }
 
   try {
@@ -59,27 +62,55 @@ function readStyles(settingsPath) {
       return {
         exists: true,
         malformed: true,
-        styles: [],
+        data: null,
         errorDetail: `JSON parse error offset ${errors[0].offset}`
       };
     }
 
     if (!data || typeof data !== 'object') {
-      return { exists: true, styles: [] };
+      return { exists: true, data: {}, rawText: raw };
     }
 
-    const rawStyles = data['markdown.styles'];
-    let styles = [];
-    if (Array.isArray(rawStyles)) {
-      styles = rawStyles.filter(s => typeof s === 'string');
-    } else if (typeof rawStyles === 'string') {
-      styles = [rawStyles];
-    }
-
-    return { exists: true, styles, rawData: data, rawText: raw };
+    return { exists: true, data, rawText: raw };
   } catch (err) {
-    return { exists: true, malformed: true, styles: [], errorDetail: err.message };
+    return { exists: true, malformed: true, data: null, errorDetail: err.message };
   }
+}
+
+/**
+ * Read a single settings key. Returns `value: undefined` when absent.
+ */
+function readSettingValue(settingsPath, key) {
+  const res = readSettings(settingsPath);
+  if (!res.exists || res.malformed) {
+    return { exists: res.exists, malformed: res.malformed, errorDetail: res.errorDetail, value: undefined };
+  }
+  return { exists: true, value: res.data[key], rawText: res.rawText };
+}
+
+/**
+ * Read and parse markdown.styles from settings.json.
+ */
+function readStyles(settingsPath) {
+  const res = readSettings(settingsPath);
+
+  if (!res.exists) {
+    return { exists: false, styles: [] };
+  }
+
+  if (res.malformed) {
+    return { exists: true, malformed: true, styles: [], errorDetail: res.errorDetail };
+  }
+
+  const rawStyles = res.data['markdown.styles'];
+  let styles = [];
+  if (Array.isArray(rawStyles)) {
+    styles = rawStyles.filter(s => typeof s === 'string');
+  } else if (typeof rawStyles === 'string') {
+    styles = [rawStyles];
+  }
+
+  return { exists: true, styles, rawData: res.data, rawText: res.rawText };
 }
 
 /**
@@ -128,9 +159,14 @@ function backupSettings(settingsPath) {
 }
 
 /**
- * Write updated markdown.styles into settings.json using jsonc-parser.
+ * Apply a batch of key updates to settings.json using jsonc-parser, preserving
+ * comments and formatting.
+ *
+ * `updates` is an array of `{ key, value }`. A value of `undefined` removes the
+ * key. Batching matters: each call takes one rolling backup and performs one
+ * atomic write, so writing three keys does not burn through all three .bak slots.
  */
-function writeStyles(settingsPath, nextStyles) {
+function writeSettingValues(settingsPath, updates) {
   const dir = path.dirname(settingsPath);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -138,7 +174,7 @@ function writeStyles(settingsPath, nextStyles) {
 
   let raw = '{}';
   if (fs.existsSync(settingsPath)) {
-    const readResult = readStyles(settingsPath);
+    const readResult = readSettings(settingsPath);
     if (readResult.malformed) {
       return { ok: false, code: 'EMALFORMED', message: `Cannot modify malformed settings.json: ${readResult.errorDetail}` };
     }
@@ -147,12 +183,12 @@ function writeStyles(settingsPath, nextStyles) {
   }
 
   const formattingOptions = detectIndent(raw);
-  
-  // If nextStyles is empty/undefined, remove the property, else update it
-  const valueToSet = (Array.isArray(nextStyles) && nextStyles.length > 0) ? nextStyles : undefined;
-  
-  const edits = modify(raw, ['markdown.styles'], valueToSet, { formattingOptions });
-  const updatedContent = applyEdits(raw, edits);
+
+  let updatedContent = raw;
+  for (const { key, value } of updates) {
+    const edits = modify(updatedContent, [key], value, { formattingOptions });
+    updatedContent = applyEdits(updatedContent, edits);
+  }
 
   // Validate that updated content parses correctly
   const parseErrors = [];
@@ -175,12 +211,87 @@ function writeStyles(settingsPath, nextStyles) {
   }
 }
 
+/**
+ * Write a single settings key. Pass `undefined` to remove it.
+ */
+function writeSettingValue(settingsPath, key, value) {
+  return writeSettingValues(settingsPath, [{ key, value }]);
+}
+
+/**
+ * Write updated markdown.styles into settings.json.
+ */
+function writeStyles(settingsPath, nextStyles) {
+  // Empty/undefined removes the property rather than writing an empty array.
+  const valueToSet = (Array.isArray(nextStyles) && nextStyles.length > 0) ? nextStyles : undefined;
+  return writeSettingValue(settingsPath, 'markdown.styles', valueToSet);
+}
+
+const RECOMMENDED_MARKDOWN_EXTENSIONS = [
+  'bierner.markdown-mermaid',
+  'goessner.mdmath',
+  'yzhang.markdown-all-in-one'
+];
+
+/**
+ * Read recommendations array from extensions.json.
+ */
+function readRecommendations(extensionsPath) {
+  const res = readSettings(extensionsPath);
+  if (!res.exists) {
+    return { exists: false, recommendations: [] };
+  }
+  if (res.malformed) {
+    return { exists: true, malformed: true, recommendations: [], errorDetail: res.errorDetail };
+  }
+
+  const raw = res.data['recommendations'];
+  let recommendations = [];
+  if (Array.isArray(raw)) {
+    recommendations = raw.filter(r => typeof r === 'string');
+  }
+  return { exists: true, recommendations, rawData: res.data, rawText: res.rawText };
+}
+
+/**
+ * Merge or remove recommendations while preserving user entries and order.
+ */
+function computeNextRecommendations(currentList, toAdd = [], toRemove = []) {
+  const removeSet = new Set(toRemove);
+  const preserved = (currentList || []).filter(item => !removeSet.has(item));
+
+  for (const item of toAdd) {
+    if (!preserved.includes(item)) {
+      preserved.push(item);
+    }
+  }
+
+  return preserved;
+}
+
+/**
+ * Write updated recommendations into extensions.json.
+ */
+function writeRecommendations(extensionsPath, recommendations) {
+  const valueToSet = (Array.isArray(recommendations) && recommendations.length > 0) ? recommendations : undefined;
+  return writeSettingValue(extensionsPath, 'recommendations', valueToSet);
+}
+
 module.exports = {
+  RECOMMENDED_MARKDOWN_EXTENSIONS,
   stripBOM,
   detectIndent,
   extractThemeIdFromPath,
+  readSettings,
+  readSettingValue,
   readStyles,
   computeNextStyles,
+  readRecommendations,
+  computeNextRecommendations,
+  writeRecommendations,
   backupSettings,
+  writeSettingValues,
+  writeSettingValue,
   writeStyles
 };
+

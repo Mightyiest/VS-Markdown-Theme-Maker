@@ -11,18 +11,37 @@
   <p><strong>Authors:</strong> Dr. Alex Mercer, Prof. Elena Rostova — <em>Institute of Advanced AI Computing</em></p>
   
   <blockquote>
-    <strong>Abstract:</strong> We propose an efficient gradient-based neural architecture search algorithm (NAS-RL) that reduces hyperparameter optimization time by 14x while maintaining high classification accuracy on benchmark datasets.
+    <p><strong>Abstract:</strong> We propose an efficient gradient-based neural architecture search algorithm (<strong>NAS-RL</strong>) that reduces hyperparameter optimization time by 14x while maintaining high classification accuracy on benchmark datasets.</p>
   </blockquote>
 
-  <h2>1. Introduction</h2>
-  <p>Deep learning models require careful architecture design. Manual architecture engineering is labor-intensive and prone to human bias. In this paper, we formalize model selection as a Markov Decision Process (MDP).</p>
+  <hr>
 
-  <h2>2. Mathematical Model & Formulation</h2>
-  <p>Let <i>A</i> denote the space of candidate layer configurations. The expected reward function <i>R</i>(&theta;) is defined over operational time steps <i>t</i> = 1 &hellip; <i>T</i> as:</p>
+  <h2>1. Introduction &amp; Problem Formalization</h2>
+  <p>Deep learning models require careful architecture design. Manual architecture engineering is labor-intensive and prone to human bias. In this paper, we formalize model selection as a <strong>Markov Decision Process (MDP)</strong> governed by policy &pi;<sub>&theta;</sub>.</p>
+
+  <p>Let <i>A</i> denote the space of candidate layer configurations. The expected reward function <i>J</i>(&theta;) is defined over operational time steps <i>t</i> = 1 &hellip; <i>T</i> as:</p>
   
-  <pre><code>J(&theta;) = E_[P(a_{1:T}; &theta;)] [ &Sigma;_{t=1..T} &gamma;<sup>t</sup> &middot; R(a<sub>t</sub>) ]</code></pre>
+  <pre><code>J(&theta;) = E_[&tau; ~ &pi;<sub>&theta;</sub>] [ &Sigma;_{t=1..T} &gamma;<sup>t</sup> &middot; R(s<sub>t</sub>, a<sub>t</sub>) ]</code></pre>
 
-  <h3>2.1 Convergence Benchmarks</h3>
+  <h2>2. Mathematical Formulation &amp; Policy Gradients</h2>
+  <p>The policy gradient update with exponential moving baseline <i>b</i> is formulated as:</p>
+  <pre><code>&nabla;<sub>&theta;</sub> J(&theta;) = &Sigma;_{t=1..T} E_[&pi;<sub>&theta;</sub>] [ &nabla;<sub>&theta;</sub> log &pi;<sub>&theta;</sub>(a<sub>t</sub> | s<sub>t</sub>) &middot; (R<sub>t</sub> - b) ]</code></pre>
+
+  <p>Candidate operation selection probability via temperature-scaled softmax:</p>
+  <pre><code>P(a<sub>t</sub> = k | s<sub>t</sub>) = exp(z<sub>k</sub> / &tau;) / &Sigma;_{j=1..K} exp(z<sub>j</sub> / &tau;)</code></pre>
+
+  <h2>3. Search Pipeline (Mermaid Flowchart)</h2>
+  <div class="mermaid">graph TD
+    A["Search Space (Layer Candidates)"] --> B["Controller RNN (Policy Network &pi;<sub>&theta;</sub>)"]
+    B -->|Sample Architecture a<sub>t</sub>| C["Child Neural Network Generator"]
+    C --> D["Train Candidate on Benchmark Dataset"]
+    D --> E["Evaluate Validation Accuracy &amp; Latency"]
+    E --> F["Compute Multi-Objective Reward R(a<sub>t</sub>)"]
+    F --> G["Policy Gradient Update &nabla;<sub>&theta;</sub> J(&theta;)"]
+    G -->|REINFORCE Backpropagation| B
+  </div>
+
+  <h2>4. Empirical Convergence Benchmarks</h2>
   <table>
     <thead>
       <tr>
@@ -30,31 +49,48 @@
         <th>Top-1 Accuracy</th>
         <th>Search Time (GPU Hours)</th>
         <th>Parameters (M)</th>
+        <th>FLOPs (G)</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>Baseline CNN</td>
+        <td>Baseline ResNet-50</td>
         <td>76.4%</td>
         <td>240</td>
         <td>25.6</td>
+        <td>4.1</td>
       </tr>
       <tr>
-        <td>NAS-RL (Proposed)</td>
-        <td>84.1%</td>
-        <td>17</td>
-        <td>14.2</td>
+        <td>Random Search</td>
+        <td>78.1%</td>
+        <td>180</td>
+        <td>21.3</td>
+        <td>3.6</td>
+      </tr>
+      <tr>
+        <td>DARTS (Differentiable)</td>
+        <td>82.3%</td>
+        <td>36</td>
+        <td>16.8</td>
+        <td>2.9</td>
+      </tr>
+      <tr>
+        <td><strong>NAS-RL (Proposed)</strong></td>
+        <td><strong>84.1%</strong></td>
+        <td><strong>17</strong></td>
+        <td><strong>14.2</strong></td>
+        <td><strong>2.4</strong></td>
       </tr>
     </tbody>
   </table>
 
-  <h2>3. Experimental Results & Analysis</h2>
+  <h2>5. Summary &amp; References</h2>
   <p>Our empirical evaluations demonstrate superior computational efficiency across all validation sets. For detailed logs and weights, visit the <a href="#">Research Repository</a>.</p>
   
   <h4>References</h4>
   <ul>
-    <li>[1] Smith et al. <em>Automated Architecture Exploration</em>, 2024.</li>
-    <li>[2] Zhang & Liu. <em>Reinforcement Learning in Deep Networks</em>, 2025.</li>
+    <li>[1] Smith et al. <em>Automated Architecture Exploration</em>, JMLR 2024.</li>
+    <li>[2] Zhang &amp; Liu. <em>Reinforcement Learning in Deep Networks</em>, NeurIPS 2025.</li>
   </ul>
 </body>
 </html>

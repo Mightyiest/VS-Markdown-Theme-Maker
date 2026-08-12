@@ -6,7 +6,11 @@ const {
   readStyles,
   computeNextStyles,
   writeStyles,
-  extractThemeIdFromPath
+  extractThemeIdFromPath,
+  readRecommendations,
+  computeNextRecommendations,
+  writeRecommendations,
+  RECOMMENDED_MARKDOWN_EXTENSIONS
 } = require('../src/lib/settings-writer');
 
 const TEST_DIR = path.join(__dirname, 'tmp-settings-test');
@@ -101,3 +105,47 @@ test('uninstall removes property entirely when empty', () => {
   assert.ok(!updatedContent.includes('markdown.styles'));
   cleanupTestDir();
 });
+
+test('computeNextRecommendations merges and deduplicates recommendations', () => {
+  const current = ['esbenp.prettier-vscode', 'bierner.markdown-mermaid'];
+  const next = computeNextRecommendations(current, RECOMMENDED_MARKDOWN_EXTENSIONS);
+  assert.deepStrictEqual(next, [
+    'esbenp.prettier-vscode',
+    'bierner.markdown-mermaid',
+    'goessner.mdmath',
+    'yzhang.markdown-all-in-one'
+  ]);
+});
+
+test('writeRecommendations writes and preserves extensions.json', () => {
+  setupTestDir();
+  const extensionsPath = path.join(TEST_DIR, 'extensions.json');
+  const initial = `// Project extensions
+{
+  "recommendations": ["dbaeumer.vscode-eslint"]
+}`;
+  fs.writeFileSync(extensionsPath, initial, 'utf8');
+
+  const read = readRecommendations(extensionsPath);
+  assert.strictEqual(read.exists, true);
+  assert.deepStrictEqual(read.recommendations, ['dbaeumer.vscode-eslint']);
+
+  const next = computeNextRecommendations(read.recommendations, RECOMMENDED_MARKDOWN_EXTENSIONS);
+  const writeRes = writeRecommendations(extensionsPath, next);
+  assert.strictEqual(writeRes.ok, true);
+
+  const updated = readRecommendations(extensionsPath);
+  assert.ok(updated.recommendations.includes('dbaeumer.vscode-eslint'));
+  assert.ok(updated.recommendations.includes('bierner.markdown-mermaid'));
+  assert.ok(updated.recommendations.includes('goessner.mdmath'));
+  assert.ok(updated.rawText.includes('// Project extensions'));
+
+  // Test clean removal
+  const cleaned = computeNextRecommendations(updated.recommendations, [], RECOMMENDED_MARKDOWN_EXTENSIONS);
+  writeRecommendations(extensionsPath, cleaned);
+  const afterClean = readRecommendations(extensionsPath);
+  assert.deepStrictEqual(afterClean.recommendations, ['dbaeumer.vscode-eslint']);
+
+  cleanupTestDir();
+});
+

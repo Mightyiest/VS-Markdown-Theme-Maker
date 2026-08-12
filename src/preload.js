@@ -15,6 +15,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
   listInstalledProjects: () => ipcRenderer.invoke('project:listInstalled'),
   removeProjectRecord: (projectPath) => ipcRenderer.invoke('project:removeRecord', { projectPath }),
 
+  // Markdown & LaTeX renderer methods
+  renderMarkdown: (markdown) => ipcRenderer.invoke('markdown:render', { markdown }),
+  getKatexCss: () => ipcRenderer.invoke('markdown:getKatexCss'),
+  getMermaidJs: () => ipcRenderer.invoke('markdown:getMermaidJs'),
+
+  // IDE Preview Dependencies methods
+  getDependenciesStatus: () => ipcRenderer.invoke('dependencies:getStatus'),
+
   // Window control methods
   minimizeWindow: () => ipcRenderer.invoke('window:minimize'),
   maximizeWindow: () => ipcRenderer.invoke('window:maximize'),

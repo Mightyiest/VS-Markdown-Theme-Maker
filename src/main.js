@@ -6,6 +6,8 @@ const { installTheme, detectTheme, uninstallTheme } = require('./lib/theme-insta
 const { extractTokensFromCss, generateCssFromTokens, DEFAULT_TOKENS } = require('./lib/theme-tokens');
 const { listCustomThemes, getCustomTheme, saveCustomTheme, deleteCustomTheme, getCustomThemeCss } = require('./lib/custom-themes');
 const { getProjectInstallationRecord, listInstalledProjects, removeProjectRecord } = require('./lib/project-registry');
+const { renderMarkdownToHtml, getKatexCss, getMermaidJs } = require('./lib/markdown-engine');
+const { getDependenciesStatus } = require('./lib/dependency-checker');
 
 let mainWindow = null;
 const APP_THEMES_DIR = path.join(__dirname, 'renderer', 'themes');
@@ -241,7 +243,7 @@ function registerIpcHandlers() {
   });
 
   ipcMain.handle('theme:uninstall', async (_, { projectPath }) => {
-    return uninstallTheme({ projectPath });
+    return uninstallTheme({ projectPath, userDataPath: getUserDataPath() });
   });
 
   ipcMain.handle('project:getRecord', async (_, { projectPath }) => {
@@ -257,4 +259,27 @@ function registerIpcHandlers() {
   ipcMain.handle('project:removeRecord', async (_, { projectPath }) => {
     return removeProjectRecord(getUserDataPath(), projectPath);
   });
+
+  ipcMain.handle('markdown:render', async (_, { markdown }) => {
+    try {
+      const html = renderMarkdownToHtml(markdown || '');
+      return { ok: true, html };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('markdown:getKatexCss', async () => {
+    return { ok: true, css: getKatexCss() };
+  });
+
+  ipcMain.handle('markdown:getMermaidJs', async () => {
+    return { ok: true, js: getMermaidJs() };
+  });
+
+  ipcMain.handle('dependencies:getStatus', async () => {
+    return getDependenciesStatus();
+  });
 }
+
+

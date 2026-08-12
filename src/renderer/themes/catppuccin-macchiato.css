@@ -1,59 +1,63 @@
-:root {
-  --vscode-markdown-backgroundColor: #24273a;
-  --vscode-markdown-textColor: #cad3f5;
-  --vscode-markdown-h1Color: #8aadf4;
-  --vscode-markdown-h2Color: #f5bde6;
-  --vscode-markdown-h3Color: #c6a0f6;
-  --vscode-markdown-h4Color: #8bd5ca;
-  --vscode-markdown-linkColor: #8aadf4;
-  --vscode-markdown-codeBackgroundColor: #1e2030;
-  --vscode-markdown-codeTextColor: #f5a97f;
-  --vscode-markdown-blockquoteBackgroundColor: #1e2030;
-  --vscode-markdown-accentBorderColor: #f5bde6;
-  --vscode-markdown-tableHeaderBackgroundColor: #363a4f;
-}
+/* Custom Markdown Preview Theme */
 
 body {
-  background-color: var(--vscode-markdown-backgroundColor, #24273a) !important;
-  color: var(--vscode-markdown-textColor, #cad3f5) !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  padding: 1.5rem 2rem;
+  background-color: #24273a;
+  color: #cad3f5;
+  line-height: 1.75;
+  padding: 2rem 1.75rem;
+  max-width: 860px;
+  margin: 0 auto;
+  font-size: 15px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
-  line-height: 1.25;
-  margin-top: 1.5em;
+  line-height: 1.3;
+  margin-top: 1.8em;
   margin-bottom: 0.5em;
+  letter-spacing: -0.01em;
 }
 
 h1 {
-  color: var(--vscode-markdown-h1Color, #8aadf4) !important;
-  font-size: 2em;
-  border-bottom: 1px solid var(--vscode-markdown-accentBorderColor, #f5bde6);
-  padding-bottom: 0.3em;
+  font-size: 1.8rem;
+  color: #8aadf4;
+  border-bottom: 1px solid #f5bde6;
+  padding-bottom: 0.4rem;
 }
 
 h2 {
-  color: var(--vscode-markdown-h2Color, #f5bde6) !important;
-  font-size: 1.5em;
-  border-bottom: 1px solid rgba(245, 189, 230, 0.2);
-  padding-bottom: 0.3em;
+  font-size: 1.45rem;
+  color: #f5bde6;
+  border-bottom: 1px solid #f5bde6;
+  padding-bottom: 0.35rem;
 }
 
 h3 {
-  color: var(--vscode-markdown-h3Color, #c6a0f6) !important;
-  font-size: 1.25em;
+  font-size: 1.2rem;
+  color: #c6a0f6;
 }
 
 h4 {
-  color: var(--vscode-markdown-h4Color, #8bd5ca) !important;
-  font-size: 1em;
+  font-size: 1.05rem;
+  color: #8bd5ca;
+}
+
+p {
+  margin-bottom: 1.1rem;
+}
+
+ul, ol {
+  margin-bottom: 1.1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.3rem;
 }
 
 a {
-  color: var(--vscode-markdown-linkColor, #8aadf4) !important;
+  color: #8aadf4;
   text-decoration: none;
 }
 
@@ -61,55 +65,687 @@ a:hover {
   text-decoration: underline;
 }
 
-code {
-  background-color: var(--vscode-markdown-codeBackgroundColor, #1e2030) !important;
-  color: var(--vscode-markdown-codeTextColor, #f5a97f) !important;
-  padding: 0.2em 0.4em;
-  border-radius: 4px;
-  font-family: 'Consolas', 'Courier New', monospace;
-  font-size: 0.88em;
-}
-
-pre {
-  background-color: var(--vscode-markdown-codeBackgroundColor, #1e2030) !important;
-  padding: 1em;
-  border-radius: 6px;
-  overflow-x: auto;
-}
-
-pre code {
-  background-color: transparent !important;
-  padding: 0;
-}
-
-blockquote {
-  background-color: var(--vscode-markdown-blockquoteBackgroundColor, #1e2030) !important;
-  border-left: 4px solid var(--vscode-markdown-accentBorderColor, #f5bde6) !important;
-  margin: 1em 0;
-  padding: 0.6em 1em;
-  color: var(--vscode-markdown-textColor, #cad3f5);
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1em 0;
-}
-
-th, td {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.5em 0.8em;
-  text-align: left;
-}
-
-th {
-  background-color: var(--vscode-markdown-tableHeaderBackgroundColor, #363a4f) !important;
+strong {
   font-weight: 600;
 }
 
-hr {
-  border: 0;
-  height: 1px;
-  background: var(--vscode-markdown-accentBorderColor, #f5bde6);
-  margin: 2em 0;
+code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.875em;
+  background-color: #1e2030;
+  color: #f5a97f;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
 }
+
+pre {
+  background-color: #1e2030;
+  border: 1px solid #f5bde6;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  margin: 1.2rem 0;
+}
+
+pre code {
+  background: transparent;
+  color: #cad3f5;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Code Block Containers & Headers */
+
+/* Code Block Containers & Language Header Bars */
+.code-block-container {
+  border: 1px solid #f5bde6;
+  border-radius: 8px;
+  background-color: #1e2030;
+  margin: 1.2rem 0;
+  overflow: hidden;
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid #f5bde6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #cad3f5;
+  opacity: 0.85;
+}
+
+.code-lang-label {
+  text-transform: uppercase;
+}
+
+/* Base Pre Block */
+pre {
+  position: relative;
+  background-color: #1e2030;
+  border: 1px solid #f5bde6;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  margin: 1.2rem 0;
+  box-sizing: border-box;
+}
+
+/* Header Bar for Pre Code Blocks with Languages */
+pre[data-lang]:not(.mermaid):not([data-lang=""]):not([data-lang="mermaid"]),
+pre:has(code[class*="language-"]):not(.mermaid):not(:has(code.language-mermaid)) {
+  padding-top: 2.3rem !important;
+}
+
+pre[data-lang]:not(.mermaid):not([data-lang=""]):not([data-lang="mermaid"])::before,
+pre:has(code[class*="language-"]):not(.mermaid):not(:has(code.language-mermaid))::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid #f5bde6;
+  padding: 0 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #cad3f5;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* Specific Language Label Overrides when data-lang is missing */
+pre:not([data-lang]):has(code.language-javascript)::before, pre:not([data-lang]):has(code.lang-javascript)::before, pre:not([data-lang]):has(code.language-js)::before { content: 'JAVASCRIPT'; }
+pre:not([data-lang]):has(code.language-typescript)::before, pre:not([data-lang]):has(code.lang-typescript)::before, pre:not([data-lang]):has(code.language-ts)::before { content: 'TYPESCRIPT'; }
+pre:not([data-lang]):has(code.language-html)::before, pre:not([data-lang]):has(code.lang-html)::before { content: 'HTML'; }
+pre:not([data-lang]):has(code.language-css)::before, pre:not([data-lang]):has(code.lang-css)::before { content: 'CSS'; }
+pre:not([data-lang]):has(code.language-json)::before, pre:not([data-lang]):has(code.lang-json)::before { content: 'JSON'; }
+pre:not([data-lang]):has(code.language-python)::before, pre:not([data-lang]):has(code.lang-python)::before, pre:not([data-lang]):has(code.language-py)::before { content: 'PYTHON'; }
+pre:not([data-lang]):has(code.language-bash)::before, pre:not([data-lang]):has(code.lang-bash)::before, pre:not([data-lang]):has(code.language-sh)::before { content: 'BASH'; }
+pre:not([data-lang]):has(code.language-text)::before, pre:not([data-lang]):has(code.lang-text)::before { content: 'TEXT'; }
+pre:not([data-lang]):has(code.language-markdown)::before, pre:not([data-lang]):has(code.lang-markdown)::before, pre:not([data-lang]):has(code.language-md)::before { content: 'MARKDOWN'; }
+
+/* Strict Exclusion for Diagrams & Mermaid */
+.mermaid::before,
+div.mermaid::before,
+pre.mermaid::before,
+pre:has(code.language-mermaid)::before,
+pre:has(code.lang-mermaid)::before {
+  display: none !important;
+  content: none !important;
+}
+
+.mermaid,
+div.mermaid,
+pre.mermaid,
+pre:has(code.language-mermaid) {
+  padding-top: 1rem !important;
+}
+
+
+.code-block-container pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0.9rem 1.1rem;
+  background: transparent;
+}
+
+/* Standard Blockquotes */
+blockquote {
+  margin: 1.2rem 0;
+  padding: 0.7rem 1rem;
+  background: #1e1e38;
+  border-left: 3px solid #f5bde6;
+  border-radius: 0 6px 6px 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* GitHub-Style Alerts */
+.markdown-alert {
+  padding: 0.85rem 1.1rem;
+  margin: 1.3rem 0;
+  border-left: 4px solid;
+  border-radius: 0 8px 8px 0;
+}
+
+.markdown-alert-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.35rem;
+}
+
+.markdown-alert-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.08);
+}
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: #3b82f6;
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.08);
+}
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: #10b981;
+}
+
+.markdown-alert.markdown-alert-important {
+  border-color: #a855f7;
+  background-color: rgba(168, 85, 247, 0.08);
+}
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: #a855f7;
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.08);
+}
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: #f59e0b;
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.08);
+}
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: #ef4444;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #f5bde6;
+}
+
+thead {
+  background-color: #363a4f;
+}
+
+th, td {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  border: 1px solid #f5bde6;
+}
+
+th {
+  background-color: #363a4f;
+  color: #f5bde6;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* KaTeX & Math */
+.katex-display-wrapper {
+  margin: 1.2rem 0;
+  padding: 0.6rem 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.katex {
+  font-size: 1.08em;
+  color: #cad3f5;
+}
+
+/* Task Lists & Form Controls */
+ul.contains-task-list,
+ol.contains-task-list {
+  list-style-type: none !important;
+  padding-left: 0.4rem !important;
+}
+
+li.task-list-item,
+.task-list-item {
+  list-style-type: none !important;
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+input[type="checkbox"],
+input[type="radio"],
+.task-list-item-checkbox {
+  accent-color: #8aadf4;
+  width: 1.05em;
+  height: 1.05em;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* Mermaid Diagrams */
+.mermaid,
+div.mermaid,
+svg.mermaid {
+  background: #1e2030;
+  border: 1px solid #f5bde6;
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin: 1.3rem 0;
+  text-align: center;
+  white-space: pre-wrap;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  overflow-x: auto;
+}
+
+.mermaid svg,
+div.mermaid svg {
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Highlight.js Syntax Highlighting Palette */
+.hljs,
+pre code,
+pre code.hljs {
+  color: #cad3f5;
+  background: transparent;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: #ff7b72; }
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ { color: #d2a8ff; }
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-variable, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id { color: #79c0ff; }
+.hljs-regexp, .hljs-string, .hljs-meta .hljs-string { color: #a5d6ff; }
+.hljs-built_in, .hljs-symbol { color: #ffa657; }
+.hljs-comment, .hljs-code, .hljs-formula { color: #8b949e; }
+.hljs-name, .hljs-quote, .hljs-selector-tag, .hljs-selector-pseudo { color: #7ee787; }
+.hljs-subst, .hljs-emphasis, .hljs-strong, .hljs-char.escape_, .hljs-link, .hljs-params, .hljs-property, .hljs-punctuation, .hljs-tag { color: #cad3f5; }
+.hljs-section { color: #4c8eff; }
+.hljs-bullet { color: #f2cc60; }
+.hljs-addition { color: #3fb950; }
+.hljs-deletion { color: #f85149; }
+
+.hljs-comment,
+.hljs-quote {
+  font-style: italic;
+}
+
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 600; }
+.hljs-section { font-weight: 600; }
+.hljs-link { text-decoration: underline; }
+
+hr {
+  height: 1px;
+  background-color: #f5bde6;
+  border: none;
+  margin: 1.8rem 0;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #24273a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f5bde6;
+  border-radius: 3px;
+}
+
+/* === BEGIN GENERATED: syntax + code chrome — do not edit by hand === */
+
+/* Code block container, header strip, language label and copy button.
+   Only this app's preview emits this markup; the selectors are inert in
+   VS Code and MPE, which render a bare <pre><code>. */
+.code-block-container {
+  margin: 1.3rem 0;
+  background-color: #1e2030;
+  border: 1px solid #f5bde6;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+  background: #303241;
+  border-bottom: 1px solid #f5bde6;
+  user-select: none;
+}
+
+.code-lang-label {
+  font-size: 0.74rem;
+  font-family: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  color: #c6a0f6;
+  text-transform: lowercase;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8bd5ca;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.code-copy-btn:hover {
+  background: #424451;
+  color: #cad3f5;
+  border-color: #f5bde6;
+}
+
+.code-copy-btn.copied {
+  color: #34b44b !important;
+}
+
+.code-block-container pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0.9rem 1.1rem !important;
+  background: transparent;
+}
+
+/* Base Pre Block for standard preview environments */
+pre:not(.mermaid):not(:has(code.language-mermaid)):not(:has(code.lang-mermaid)):not(:has(> svg)) {
+  position: relative;
+  background-color: #1e2030;
+  border: 1px solid #f5bde6;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  margin: 1.2rem 0;
+  box-sizing: border-box;
+}
+
+/* Header Bar for Pre Code Blocks (Native VS Code Preview) */
+pre[data-lang]:not([data-lang=""]):not(.code-block-container pre):not(.mermaid):not(:has(code.language-mermaid)),
+pre:has(code[class*="language-"]):not(.code-block-container pre):not(.mermaid):not(:has(code.language-mermaid)):not(:has(code.lang-mermaid)) {
+  padding-top: 2.35rem !important;
+}
+
+pre[data-lang]:not([data-lang=""]):not(.code-block-container pre):not(.mermaid):not(:has(code.language-mermaid))::before,
+pre:has(code[class*="language-"]):not(.code-block-container pre):not(.mermaid):not(:has(code.language-mermaid)):not(:has(code.lang-mermaid))::before {
+  content: 'CODE';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid #f5bde6;
+  padding: 0 0.85rem;
+  font-family: 'Cascadia Code', 'JetBrains Mono', Consolas, -apple-system, BlinkMacSystemFont, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #cad3f5;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* Use data-lang attribute if present */
+pre[data-lang]:not([data-lang=""]):not(.code-block-container pre)::before {
+  content: attr(data-lang) !important;
+}
+
+/* Specific Language Label Overrides for VS Code Native Markdown */
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-javascript)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-javascript)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-js)::before { content: 'JAVASCRIPT' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-typescript)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-typescript)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-ts)::before { content: 'TYPESCRIPT' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-html)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-html)::before { content: 'HTML' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-css)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-css)::before { content: 'CSS' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-json)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-json)::before { content: 'JSON' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-python)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-python)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-py)::before { content: 'PYTHON' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-bash)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-bash)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-sh)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-shell)::before { content: 'BASH' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-cpp)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-cpp)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-c)::before { content: 'C++' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-csharp)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-csharp)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-cs)::before { content: 'C#' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-java)::before { content: 'JAVA' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-sql)::before { content: 'SQL' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-xml)::before { content: 'XML' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-yaml)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-yaml)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-yml)::before { content: 'YAML' !important; }
+pre:not([data-lang]):not(.code-block-container pre):has(code.language-markdown)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.lang-markdown)::before, pre:not([data-lang]):not(.code-block-container pre):has(code.language-md)::before { content: 'MARKDOWN' !important; }
+
+/* Rendered Diagram & Mermaid Containers */
+.mermaid,
+div.mermaid {
+  background: #1e2030 !important;
+  border: 1px solid #f5bde6 !important;
+  border-radius: 8px !important;
+  padding: 1.25rem !important;
+  margin: 1.3rem 0 !important;
+  text-align: center !important;
+  overflow-x: auto !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+}
+
+.mermaid svg,
+div.mermaid svg {
+  max-width: min(100%, 600px) !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  display: inline-block !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Ensure Mermaid text, nodes, labels, and arrows match theme tokens */
+.mermaid text,
+.mermaid .nodeLabel,
+.mermaid .label text,
+.mermaid .edgeLabel,
+.mermaid .messageText,
+.mermaid .actor text {
+  fill: #cad3f5 !important;
+  color: #cad3f5 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon,
+.mermaid .node path {
+  fill: #24273a !important;
+  stroke: #f5bde6 !important;
+}
+
+.mermaid .actor {
+  fill: #24273a !important;
+  stroke: #f5bde6 !important;
+}
+
+.mermaid .edgePath path,
+.mermaid .flowchart-link {
+  stroke: #c6a0f6 !important;
+}
+
+.mermaid .arrowheadPath,
+.mermaid .marker {
+  fill: #c6a0f6 !important;
+  stroke: #c6a0f6 !important;
+}
+
+/* Completely suppress raw pre blocks when Mermaid or SVG is present */
+pre:has(code.language-mermaid),
+pre:has(code.lang-mermaid),
+pre.mermaid:has(svg),
+pre:has(> svg),
+pre:has(> div.mermaid) {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+pre:has(code.language-mermaid)::before,
+pre:has(code.lang-mermaid)::before,
+pre.mermaid::before,
+pre:has(> svg)::before,
+pre:has(> div.mermaid)::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Explicit Table Column Alignment Support */
+th[align="left"], td[align="left"] {
+  text-align: left !important;
+}
+
+th[align="center"], td[align="center"] {
+  text-align: center !important;
+}
+
+th[align="right"], td[align="right"] {
+  text-align: right !important;
+}
+
+th[style*="text-align: left"], td[style*="text-align: left"],
+th[style*="text-align:left"], td[style*="text-align:left"] {
+  text-align: left !important;
+}
+
+th[style*="text-align: center"], td[style*="text-align: center"],
+th[style*="text-align:center"], td[style*="text-align:center"] {
+  text-align: center !important;
+}
+
+th[style*="text-align: right"], td[style*="text-align: right"],
+th[style*="text-align:right"], td[style*="text-align:right"] {
+  text-align: right !important;
+}
+
+/* KaTeX & Math */
+.katex-display-wrapper,
+.katex-display {
+  margin: 1.2rem 0;
+  padding: 0.6rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.katex {
+  font-size: 1.08em;
+  color: #cad3f5;
+}
+
+/* Task Lists & Form Controls */
+ul.contains-task-list,
+ol.contains-task-list,
+ul:has(input[type="checkbox"]),
+ol:has(input[type="checkbox"]) {
+  list-style-type: none !important;
+  padding-left: 0.4rem !important;
+}
+
+li.task-list-item,
+.task-list-item,
+li:has(input[type="checkbox"]) {
+  list-style-type: none !important;
+  margin-bottom: 0.45rem;
+}
+
+input[type="checkbox"],
+input[type="radio"],
+.task-list-item-checkbox {
+  accent-color: #8aadf4;
+  width: 1.05em;
+  height: 1.05em;
+  margin: 0 0.45em 0.2em 0;
+  vertical-align: middle;
+}
+
+/* highlight.js palette, contrast-fitted to this theme's code background. */
+.hljs,
+pre code,
+pre code.hljs {
+  color: #cad3f5;
+  background: transparent;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: #ff7b72; }
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ { color: #d2a8ff; }
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-variable, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id { color: #79c0ff; }
+.hljs-regexp, .hljs-string, .hljs-meta .hljs-string { color: #a5d6ff; }
+.hljs-built_in, .hljs-symbol { color: #ffa657; }
+.hljs-comment, .hljs-code, .hljs-formula { color: #8b949e; }
+.hljs-name, .hljs-quote, .hljs-selector-tag, .hljs-selector-pseudo { color: #7ee787; }
+.hljs-subst, .hljs-emphasis, .hljs-strong, .hljs-char.escape_, .hljs-link, .hljs-params, .hljs-property, .hljs-punctuation, .hljs-tag { color: #cad3f5; }
+.hljs-section { color: #4c8eff; }
+.hljs-bullet { color: #f2cc60; }
+.hljs-addition { color: #3fb950; }
+.hljs-deletion { color: #f85149; }
+
+.hljs-comment,
+.hljs-quote {
+  font-style: italic;
+}
+
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 600; }
+.hljs-section { font-weight: 600; }
+.hljs-link { text-decoration: underline; }
+
+/* === END GENERATED === */

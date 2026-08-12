@@ -11,21 +11,22 @@
   <p>Customize, preview, and instantly install custom Markdown themes for VS Code and Antigravity IDE.</p>
   
   <blockquote>
-    <strong>Seamless Workspace Integration:</strong> Instantly applies customized colors to your project's <code>.vscode/settings.json</code> with zero reload required.
+    <p><strong>Seamless Workspace Integration:</strong> Instantly applies customized colors to your project's <code>.vscode/settings.json</code> with zero reload required.</p>
   </blockquote>
 
-  <h2>Key Features</h2>
+  <hr>
+
+  <h2>✨ Key Features</h2>
   <ul>
     <li>🎨 <strong>Theme Catalog:</strong> Built-in Light, Dark, and Popular Developer Presets (Catppuccin, Tokyo Night, Nord, Dracula).</li>
     <li>🎛️ <strong>Live Color Customizer:</strong> Per-token color pickers with instant preview iframe rendering.</li>
+    <li>📐 <strong>LaTeX &amp; KaTeX Support:</strong> High-performance mathematical typesetting for academic and scientific documentation.</li>
+    <li>📊 <strong>Mermaid Diagram Support:</strong> Native rendering for flowcharts, sequence diagrams, and architecture graphs.</li>
     <li>📁 <strong>Project Registry:</strong> Multi-project theme tracking and quick project selection.</li>
-    <li>🌙 <strong>Light / Dark Mode App UI:</strong> Built-in title bar theme toggle matching your system preferences.</li>
   </ul>
 
-  <h2>Quickstart Guide</h2>
-  <p>Follow these 3 simple steps to theme your workspace:</p>
-  
-  <pre><code># 1. Clone repository
+  <h2>🚀 Quickstart Guide</h2>
+  <pre><code class="hljs language-bash"># 1. Clone repository
 git clone https://github.com/example/vs-md-theme-maker.git
 
 # 2. Install dependencies
@@ -34,7 +35,17 @@ npm install
 # 3. Launch application
 npm start</code></pre>
 
-  <h2>Theme Specifications</h2>
+  <h2>🏛️ Application Architecture (Mermaid)</h2>
+  <div class="mermaid">graph TD
+    A["Renderer UI (index.html)"] -->|theme:previewFromTokens| B["theme-tokens.js"]
+    A -->|markdown:render| C["markdown-engine.js (KaTeX &amp; Mermaid)"]
+    A -->|theme:install| D["theme-installer.js"]
+    B --> E["Preview Iframe"]
+    C --> E
+    D --> F[".vscode/settings.json"]
+  </div>
+
+  <h2>🎨 Theme Specifications</h2>
   <table>
     <thead>
       <tr>
@@ -52,7 +63,7 @@ npm start</code></pre>
       <tr>
         <td><code>textH1</code></td>
         <td>Heading 1 (H1) text</td>
-        <td><code>#7aa2f7</code></td>
+        <td><code>#e2e2f0</code></td>
       </tr>
       <tr>
         <td><code>textLink</code></td>
@@ -62,7 +73,7 @@ npm start</code></pre>
     </tbody>
   </table>
 
-  <h2>License & Contribution</h2>
+  <h2>📄 License &amp; Contribution</h2>
   <p>Licensed under the MIT License. Contributions are welcome! Read our <a href="#">Contributing Guidelines</a>.</p>
 </body>
 </html>
