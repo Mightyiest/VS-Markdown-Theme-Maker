@@ -387,15 +387,16 @@ div.mermaid svg {
 
 /* Ensure Mermaid text, nodes, labels, and arrows match theme tokens in light & dark modes */
 .mermaid text,
-.mermaid foreignObject,
-.mermaid foreignObject div,
-.mermaid foreignObject span,
-.mermaid foreignObject p,
+.mermaid tspan {
+  fill: ${t.textBody} !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+}
+
 .mermaid .nodeLabel,
 .mermaid .labelText,
 .mermaid .label text,
 .mermaid .label span,
-.mermaid .edgeLabel,
+.mermaid .label div,
 .mermaid .edgeLabel span,
 .mermaid .edgeLabel p,
 .mermaid .messageText,
@@ -403,8 +404,8 @@ div.mermaid svg {
 .mermaid .noteText span,
 .mermaid .actor text,
 .mermaid .legend text {
-  fill: ${t.textBody} !important;
   color: ${t.textBody} !important;
+  fill: ${t.textBody} !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
 }
 
@@ -451,13 +452,18 @@ div.mermaid svg {
   color: ${t.bgBody} !important;
 }
 
-.mermaid .edgeLabel,
+.mermaid .edgeLabel rect {
+  fill: ${t.bgBody} !important;
+  opacity: 0.95 !important;
+}
+
 .mermaid .edgeLabel span,
 .mermaid .edgeLabel p {
-  background-color: ${t.bgCode} !important;
+  background-color: ${t.bgBody} !important;
   color: ${t.textBody} !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  display: inline-block !important;
 }
 
 /* Completely suppress raw pre blocks when Mermaid or SVG is present */
