@@ -492,16 +492,19 @@ img {
   color: #217431 !important;
 }
 
-.code-block-container pre {
-  margin: 0;
-  border: none;
-  border-radius: 0;
+.code-block-container pre,
+.code-block-container pre:has(code) {
+  margin: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
   padding: 0.9rem 1.1rem !important;
-  background: transparent;
+  background: transparent !important;
 }
 
-/* Base Pre Block for standard preview environments */
-pre:not(.mermaid):not(:has(code.language-mermaid)):not(:has(code.lang-mermaid)):not(:has(> svg)) {
+/* Base Pre Block for bare <pre> elements in standard preview environments */
+pre:not(.code-block-container pre):not(.mermaid):not(:has(code.language-mermaid)):not(:has(code.lang-mermaid)):not(:has(> svg)) {
   position: relative;
   background-color: #f7ede0;
   border: 1px solid #f59e0b;
