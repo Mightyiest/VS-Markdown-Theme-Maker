@@ -385,114 +385,31 @@ div.mermaid svg {
   padding: 0 !important;
 }
 
-/* Ensure Mermaid text, nodes, labels, and arrows match theme tokens in light & dark modes */
-.mermaid text:not(.branch-label text):not(.commit-label text):not(.tag-label text),
-.mermaid tspan:not(.branch-label tspan):not(.commit-label tspan):not(.tag-label tspan) {
-  fill: ${t.textBody} !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
-}
-
-.mermaid .nodeLabel,
-.mermaid .labelText,
-.mermaid .label text,
-.mermaid .label span,
-.mermaid .label div,
-.mermaid .edgeLabel span,
-.mermaid .edgeLabel p,
-.mermaid .messageText,
-.mermaid .noteText,
-.mermaid .noteText span,
-.mermaid .actor text,
-.mermaid .legend text {
-  color: ${t.textBody} !important;
-  fill: ${t.textBody} !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
-}
-
-/* GitGraph badges, commit labels, branch tags, and tag labels should always have crisp white text */
-.mermaid .branch-label text,
-.mermaid .branchLabel text,
-.mermaid .branch-label tspan,
-.mermaid .branchLabel tspan,
-.mermaid .branch-label span,
-.mermaid .branchLabel span,
-.mermaid .commit-label text,
-.mermaid .commitLabel text,
-.mermaid .commit-label tspan,
-.mermaid .commitLabel tspan,
-.mermaid .commit-label span,
-.mermaid .commitLabel span,
-.mermaid .tag-label text,
-.mermaid .tagLabel text,
-.mermaid .tag-label tspan,
-.mermaid .tagLabel tspan,
-.mermaid .tag-label span,
-.mermaid .tagLabel span,
-.mermaid g.branch-label text,
-.mermaid g.commit-label text,
-.mermaid g.tag-label text {
-  fill: #ffffff !important;
-  color: #ffffff !important;
-}
-
-.mermaid .node rect,
-.mermaid .node circle:not(.commit):not(.commit-circle),
-.mermaid .node polygon,
-.mermaid .node path:not(.branch-line):not(.commit-path),
-.mermaid .cluster rect,
-.mermaid rect.labelBox,
-.mermaid .labelBox,
-.mermaid .note,
-.mermaid rect.note {
-  fill: ${t.bgBody} !important;
-  stroke: ${t.borderAccent} !important;
-}
-
-.mermaid .actor,
-.mermaid rect.actor {
-  fill: ${t.bgBody} !important;
-  stroke: ${t.borderAccent} !important;
-}
-
-.mermaid .actor-man line,
-.mermaid .actor-man circle,
-.mermaid .actor-man path {
-  stroke: ${t.textBody} !important;
-  fill: ${t.bgBody} !important;
-}
-
-.mermaid line.actor,
-.mermaid line.messageLine0,
-.mermaid line.messageLine1,
-.mermaid .loopLine,
-.mermaid .edgePath path,
-.mermaid .flowchart-link {
-  stroke: ${t.textH3} !important;
-}
-
-.mermaid .arrowheadPath,
-.mermaid .marker,
-.mermaid .sequenceNumber {
-  fill: ${t.textH3} !important;
-  stroke: ${t.textH3} !important;
-  color: ${t.bgBody} !important;
-}
-
-/* Prevent SVG foreignObject clipping for edge labels and node text */
+/* Prevent foreignObject clipping for HTML labels */
 .mermaid foreignObject,
 .mermaid div.label,
 .mermaid span.edgeLabel {
   overflow: visible !important;
 }
 
+/* Set standard font family while allowing Mermaid theme engine to manage contrast */
+.mermaid text,
+.mermaid tspan,
+.mermaid foreignObject div,
+.mermaid foreignObject span,
+.mermaid foreignObject p {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+/* Edge label background masking for flowcharts & sequence diagrams */
 .mermaid .edgeLabel rect {
-  fill: ${t.bgBody} !important;
+  fill: ${t.bgCode} !important;
   opacity: 0.95 !important;
 }
 
 .mermaid .edgeLabel span,
 .mermaid .edgeLabel p {
-  background-color: ${t.bgBody} !important;
+  background-color: ${t.bgCode} !important;
   color: ${t.textBody} !important;
   padding: 0 3px !important;
   border-radius: 3px !important;
