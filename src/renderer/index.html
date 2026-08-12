@@ -421,7 +421,9 @@
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
-      overflow-y: auto;
+      overflow: hidden;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     /* Sidebar Tabs */
@@ -431,6 +433,28 @@
       border-radius: 6px;
       padding: 2px;
       border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    .sidebar-view-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 2px;
+      min-height: 0;
+    }
+
+    .sidebar-view-container::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .sidebar-view-container::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    .sidebar-view-container::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
 
     .sidebar-tab {
@@ -978,33 +1002,35 @@
         <button class="sidebar-tab" id="tab-btn-projects" onclick="switchSidebarTab('projects')">📁 Projects (<span id="installed-project-count">0</span>)</button>
       </div>
 
-      <!-- Themes Catalog Tab View -->
-      <div id="sidebar-themes-view" style="display: flex; flex-direction: column; gap: 0.85rem;">
-        <div>
-          <div class="section-title">Popular Presets (5)</div>
-          <div class="theme-grid" id="preset-themes-container"></div>
+      <div class="sidebar-view-container">
+        <!-- Themes Catalog Tab View -->
+        <div id="sidebar-themes-view" style="display: flex; flex-direction: column; gap: 0.85rem;">
+          <div>
+            <div class="section-title">Popular Presets (5)</div>
+            <div class="theme-grid" id="preset-themes-container"></div>
+          </div>
+
+          <div>
+            <div class="section-title">Light Themes (3)</div>
+            <div class="theme-grid" id="light-themes-container"></div>
+          </div>
+
+          <div>
+            <div class="section-title">Dark Themes (3)</div>
+            <div class="theme-grid" id="dark-themes-container"></div>
+          </div>
+
+          <div id="custom-section" style="display: none;">
+            <div class="section-title">Custom Themes</div>
+            <div class="theme-grid" id="custom-themes-container"></div>
+          </div>
         </div>
 
-        <div>
-          <div class="section-title">Light Themes (3)</div>
-          <div class="theme-grid" id="light-themes-container"></div>
+        <!-- Installed Projects Tab View -->
+        <div id="sidebar-projects-view" style="display: none; flex-direction: column; gap: 0.6rem;">
+          <div class="section-title">Installed Projects</div>
+          <div id="installed-projects-container" class="theme-grid"></div>
         </div>
-
-        <div>
-          <div class="section-title">Dark Themes (3)</div>
-          <div class="theme-grid" id="dark-themes-container"></div>
-        </div>
-
-        <div id="custom-section" style="display: none;">
-          <div class="section-title">Custom Themes</div>
-          <div class="theme-grid" id="custom-themes-container"></div>
-        </div>
-      </div>
-
-      <!-- Installed Projects Tab View -->
-      <div id="sidebar-projects-view" style="display: none; flex-direction: column; gap: 0.6rem;">
-        <div class="section-title">Installed Projects</div>
-        <div id="installed-projects-container" class="theme-grid"></div>
       </div>
     </div>
 
