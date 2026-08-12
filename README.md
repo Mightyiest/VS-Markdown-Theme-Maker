@@ -22,15 +22,36 @@ An open-source Electron desktop app and theme customizer for VS Code & Antigravi
 
 ## 🔌 Required IDE Plugins & Extensions
 
-To get the complete rich Markdown experience (diagrams, math rendering, task lists, code block headers) inside **VS Code**, **Antigravity IDE**, or **Cursor**, make sure the following extensions are installed in your editor:
+To get the full Markdown experience (Mermaid diagrams, LaTeX math equations, GFM task list checkboxes) inside **VS Code**, **Antigravity IDE**, or **Cursor**, ensure the following extensions are installed in your editor:
 
-| Extension | Extension ID | Purpose |
-| :--- | :--- | :--- |
-| **Mermaid Diagram Engine** | `bierner.markdown-mermaid` | Renders flowcharts, sequence diagrams, git graphs, and architecture diagrams in native Markdown previews. |
-| **KaTeX Math Engine** | `goessner.mdmath` | Fast, high-quality LaTeX math formula rendering for inline (`$...$`) and block (`$$...$$`) equations. |
-| **Markdown All in One** | `yzhang.markdown-all-in-one` | Enables GFM task list checkboxes (`- [x]`), table auto-formatting, and editor shortcuts. |
+| Extension | Extension ID | Category | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Mermaid Diagram Engine** | `bierner.markdown-mermaid` | Diagrams | Renders flowcharts, sequence diagrams, git graphs, and architecture charts in native Markdown preview. |
+| **KaTeX Math Engine** | `goessner.mdmath` | Math & Equations | Fast, high-quality LaTeX math formula rendering for inline (`$...$`) and block (`$$...$$`) equations. |
+| **Markdown All in One** | `yzhang.markdown-all-in-one` | Formatting & Tasks | Enables GFM task list checkboxes (`- [x]`), table auto-formatting, and editor shortcuts. |
 
-> 💡 **Automatic Recommendation**: When you install a theme into a workspace via VS Markdown Theme Maker, these extensions are automatically added to your project's `.vscode/extensions.json` recommendation list so your IDE prompts you to install them.
+### Quick CLI Install Commands
+
+You can install all required extensions instantly via your terminal:
+
+```bash
+# For VS Code
+code --install-extension bierner.markdown-mermaid
+code --install-extension goessner.mdmath
+code --install-extension yzhang.markdown-all-in-one
+
+# For Antigravity IDE
+antigravity --install-extension bierner.markdown-mermaid
+antigravity --install-extension goessner.mdmath
+antigravity --install-extension yzhang.markdown-all-in-one
+
+# For Cursor
+cursor --install-extension bierner.markdown-mermaid
+cursor --install-extension goessner.mdmath
+cursor --install-extension yzhang.markdown-all-in-one
+```
+
+> 💡 **Automatic Recommendation**: When you install a theme into any project workspace via **VS Markdown Theme Maker**, these extensions are automatically added to your project's `.vscode/extensions.json` recommendation list so your IDE prompts you to install them with one click.
 
 
 ### Prerequisites
