@@ -385,13 +385,24 @@ div.mermaid svg {
   padding: 0 !important;
 }
 
-/* Ensure Mermaid text, nodes, labels, and arrows match theme tokens */
+/* Ensure Mermaid text, nodes, labels, and arrows match theme tokens in light & dark modes */
 .mermaid text,
+.mermaid foreignObject,
+.mermaid foreignObject div,
+.mermaid foreignObject span,
+.mermaid foreignObject p,
 .mermaid .nodeLabel,
+.mermaid .labelText,
 .mermaid .label text,
+.mermaid .label span,
 .mermaid .edgeLabel,
+.mermaid .edgeLabel span,
+.mermaid .edgeLabel p,
 .mermaid .messageText,
-.mermaid .actor text {
+.mermaid .noteText,
+.mermaid .noteText span,
+.mermaid .actor text,
+.mermaid .legend text {
   fill: ${t.textBody} !important;
   color: ${t.textBody} !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
@@ -400,25 +411,53 @@ div.mermaid svg {
 .mermaid .node rect,
 .mermaid .node circle,
 .mermaid .node polygon,
-.mermaid .node path {
+.mermaid .node path,
+.mermaid .cluster rect,
+.mermaid rect.labelBox,
+.mermaid .labelBox,
+.mermaid .note,
+.mermaid rect.note {
   fill: ${t.bgBody} !important;
   stroke: ${t.borderAccent} !important;
 }
 
-.mermaid .actor {
+.mermaid .actor,
+.mermaid rect.actor {
   fill: ${t.bgBody} !important;
   stroke: ${t.borderAccent} !important;
 }
 
+.mermaid .actor-man line,
+.mermaid .actor-man circle,
+.mermaid .actor-man path {
+  stroke: ${t.textBody} !important;
+  fill: ${t.bgBody} !important;
+}
+
+.mermaid line.actor,
+.mermaid line.messageLine0,
+.mermaid line.messageLine1,
+.mermaid .loopLine,
 .mermaid .edgePath path,
 .mermaid .flowchart-link {
   stroke: ${t.textH3} !important;
 }
 
 .mermaid .arrowheadPath,
-.mermaid .marker {
+.mermaid .marker,
+.mermaid .sequenceNumber {
   fill: ${t.textH3} !important;
   stroke: ${t.textH3} !important;
+  color: ${t.bgBody} !important;
+}
+
+.mermaid .edgeLabel,
+.mermaid .edgeLabel span,
+.mermaid .edgeLabel p {
+  background-color: ${t.bgCode} !important;
+  color: ${t.textBody} !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
 }
 
 /* Completely suppress raw pre blocks when Mermaid or SVG is present */
