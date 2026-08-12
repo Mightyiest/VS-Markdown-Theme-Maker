@@ -591,8 +591,8 @@ div.mermaid svg {
 }
 
 /* Ensure Mermaid text, nodes, labels, and arrows match theme tokens in light & dark modes */
-.mermaid text,
-.mermaid tspan {
+.mermaid text:not(.branch-label text):not(.commit-label text):not(.tag-label text),
+.mermaid tspan:not(.branch-label tspan):not(.commit-label tspan):not(.tag-label tspan) {
   fill: #242424 !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
 }
@@ -614,10 +614,36 @@ div.mermaid svg {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
 }
 
+/* GitGraph badges, commit labels, branch tags, and tag labels should always have crisp white text */
+.mermaid .branch-label text,
+.mermaid .branchLabel text,
+.mermaid .branch-label tspan,
+.mermaid .branchLabel tspan,
+.mermaid .branch-label span,
+.mermaid .branchLabel span,
+.mermaid .commit-label text,
+.mermaid .commitLabel text,
+.mermaid .commit-label tspan,
+.mermaid .commitLabel tspan,
+.mermaid .commit-label span,
+.mermaid .commitLabel span,
+.mermaid .tag-label text,
+.mermaid .tagLabel text,
+.mermaid .tag-label tspan,
+.mermaid .tagLabel tspan,
+.mermaid .tag-label span,
+.mermaid .tagLabel span,
+.mermaid g.branch-label text,
+.mermaid g.commit-label text,
+.mermaid g.tag-label text {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
 .mermaid .node rect,
-.mermaid .node circle,
+.mermaid .node circle:not(.commit):not(.commit-circle),
 .mermaid .node polygon,
-.mermaid .node path,
+.mermaid .node path:not(.branch-line):not(.commit-path),
 .mermaid .cluster rect,
 .mermaid rect.labelBox,
 .mermaid .labelBox,
