@@ -88,7 +88,8 @@ function createWindow() {
 
 app.setName('VS MD Theme Maker');
 
-const userDataDir = path.join(app.getPath('temp'), 'vs-md-theme-maker-userData');
+// Use standard AppData path to avoid Temp directory lock file collisions
+const userDataDir = path.join(app.getPath('appData'), 'vs-md-theme-maker');
 try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {}
 app.setPath('userData', userDataDir);
 
