@@ -970,6 +970,9 @@
     </div>
     <div class="title-center">VS MD Theme Maker</div>
     <div class="title-right">
+      <button class="theme-toggle-btn" onclick="openAboutModal()" title="About VS MD Theme Maker (v1.0.1)">
+        ℹ️ About
+      </button>
       <button class="theme-toggle-btn" id="app-theme-toggle" onclick="toggleAppTheme()" title="Switch Light/Dark App Theme">
         <span id="theme-toggle-icon">☀️</span> <span id="theme-toggle-label">Light</span>
       </button>
@@ -2008,6 +2011,7 @@
     }
 
     function openAboutModal() {
+      closeAllMenus();
       const modal = document.getElementById('about-modal');
       if (modal) modal.style.display = 'flex';
     }
