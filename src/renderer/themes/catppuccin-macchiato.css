@@ -606,6 +606,41 @@ div.mermaid svg {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
 }
 
+/* GitGraph commit labels, branch tags, and tag badges high-contrast styling */
+.mermaid .commit-label rect,
+.mermaid .commitLabel rect,
+.mermaid rect.commit-label-bkg {
+  fill: #4a4d62 !important;
+  opacity: 0.95 !important;
+}
+
+.mermaid .commit-label text,
+.mermaid .commitLabel text,
+.mermaid text.commit-label-text,
+.mermaid text.commitLabel-text,
+.mermaid .commit-label tspan,
+.mermaid .commitLabel tspan,
+.mermaid .branch-label text,
+.mermaid .branchLabel text,
+.mermaid text.branch-label-text,
+.mermaid text.branchLabel-text,
+.mermaid .branch-label tspan,
+.mermaid .branchLabel tspan,
+.mermaid .tag-label text,
+.mermaid .tagLabel text,
+.mermaid text.tag-label-text,
+.mermaid text.tagLabel-text,
+.mermaid .tag-label tspan,
+.mermaid .tagLabel tspan,
+.mermaid g.commit-label text,
+.mermaid g.branch-label text,
+.mermaid g.tag-label text {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+}
+
 /* Edge label background masking for flowcharts & sequence diagrams */
 .mermaid .edgeLabel rect {
   fill: #1e2030 !important;
